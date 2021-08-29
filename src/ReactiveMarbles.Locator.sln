@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactiveMarbles.Locator", "ReactiveMarbles.Locator\ReactiveMarbles.Locator.csproj", "{18B5935E-72FD-439D-8BD5-D48861A19D00}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactiveMarbles.Locator.Tests", "ReactiveMarbles.Locator.Tests\ReactiveMarbles.Locator.Tests.csproj", "{ADA87E92-FDFC-464B-8CBE-38EB4A3EAF26}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{18B5935E-72FD-439D-8BD5-D48861A19D00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18B5935E-72FD-439D-8BD5-D48861A19D00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18B5935E-72FD-439D-8BD5-D48861A19D00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18B5935E-72FD-439D-8BD5-D48861A19D00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADA87E92-FDFC-464B-8CBE-38EB4A3EAF26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADA87E92-FDFC-464B-8CBE-38EB4A3EAF26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADA87E92-FDFC-464B-8CBE-38EB4A3EAF26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADA87E92-FDFC-464B-8CBE-38EB4A3EAF26}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {04A8AFFC-5E31-4DDF-8B85-98652E3A0EF0}
+	EndGlobalSection
+EndGlobal
