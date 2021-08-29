@@ -5,7 +5,7 @@
 using System;
 using System.Threading;
 
-namespace ReactiveMarbles.MarbleLocator
+namespace ReactiveMarbles.Locator
 {
     /// <summary>
     /// Service Locator Mixins.

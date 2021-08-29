@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ReactiveMarbles.MarbleLocator\ReactiveMarbles.MarbleLocator.csproj" />
+    <ProjectReference Include="..\ReactiveMarbles.Locator\ReactiveMarbles.Locator.csproj" />
   </ItemGroup>
 
 </Project>

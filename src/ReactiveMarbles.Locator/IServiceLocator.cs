@@ -4,7 +4,7 @@
 
 using System;
 
-namespace ReactiveMarbles.MarbleLocator
+namespace ReactiveMarbles.Locator
 {
     /// <summary>
     /// IService Locator.

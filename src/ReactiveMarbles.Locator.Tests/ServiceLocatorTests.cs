@@ -5,7 +5,7 @@
 using System;
 using Xunit;
 
-namespace ReactiveMarbles.MarbleLocator.Tests
+namespace ReactiveMarbles.Locator.Tests
 {
     /// <summary>
     /// Service Locator Tests.
