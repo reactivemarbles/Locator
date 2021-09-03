@@ -74,7 +74,7 @@ namespace ReactiveMarbles.Locator
                 _store.Add(key, new());
             }
 
-            _store[(serviceType, contract)].Add(instanceFactory);
+            _store[key].Add(instanceFactory);
         }
 
         /// <summary>

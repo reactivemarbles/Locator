@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for full license information.
 
 using System;
+using FluentAssertions;
 using Xunit;
 
 namespace ReactiveMarbles.Locator.Tests
@@ -19,7 +20,25 @@ namespace ReactiveMarbles.Locator.Tests
         public void ServiceLocatorHasInstance()
         {
             var fixture = ServiceLocator.Current();
-            Assert.NotNull(fixture);
+
+            fixture.Should().NotBeNull();
+        }
+
+        /// <summary>
+        /// Tests the GetService method returns a contretion for the interface.
+        /// </summary>
+        [Fact]
+        public void ServiceLocatorReturnsServiceFromInterface()
+        {
+            // Given
+            var fixture = ServiceLocator.Current();
+            fixture.AddService<ITestService>(() => new TestService());
+
+            // When
+            var result = fixture.GetService<ITestService>();
+
+            // Then
+            result.Should().NotBeNull();
         }
     }
 }
