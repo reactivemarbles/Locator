@@ -58,7 +58,7 @@ namespace ReactiveMarbles.Locator
         /// A service object[] of type <paramref name="serviceType">serviceType</paramref>.   -or-  null if there is no service object of type <paramref name="serviceType">serviceType</paramref>.
         /// </returns>
         public object[] GetServices(Type serviceType, string? contract = null) =>
-            (_store.TryGetValue((serviceType, contract ?? string.Empty), out var funcValue) ? funcValue?.Select(x => x()).ToArray() : default)!;
+            (_store.TryGetValue((serviceType, contract ?? string.Empty), out var funcValue) ? funcValue?.Select(x => x()).ToArray() : Array.Empty<object>())!;
 
         /// <summary>
         /// Adds the service.
