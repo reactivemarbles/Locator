@@ -36,7 +36,7 @@ namespace ReactiveMarbles.Locator.Tests
         /// </summary>
         [Fact]
         public void ServiceLocatorGetServicesGenericReturnsFromInterface() =>
-            ExecFunction.Run(() =>
+            GetFunctionExecutor().Run(() =>
             {
                 // Given
                 var fixture = ServiceLocator.Current();
@@ -55,7 +55,7 @@ namespace ReactiveMarbles.Locator.Tests
         /// </summary>
         [Fact]
         public void ServiceLocatorRemoveServiceGenericReturnsFromInterface() =>
-            ExecFunction.Run(() =>
+            GetFunctionExecutor().Run(() =>
             {
                 // Given
                 var fixture = ServiceLocator.Current();
@@ -96,7 +96,7 @@ namespace ReactiveMarbles.Locator.Tests
         /// </summary>
         [Fact]
         public void ServiceLocatorRemoveServicesGenericReturnsFromInterface() =>
-            ExecFunction.Run(() =>
+            GetFunctionExecutor().Run(() =>
             {
                 // Given
                 var fixture = ServiceLocator.Current();
