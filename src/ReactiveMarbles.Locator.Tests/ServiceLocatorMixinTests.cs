@@ -47,7 +47,7 @@ namespace ReactiveMarbles.Locator.Tests
                 var result = fixture.GetServices<ITestService>();
 
                 // Then
-                result.Should().NotBeNull().And.HaveCount(5);
+                result.Should().NotBeNull().And.HaveCount(2);
             });
 
         /// <summary>
