@@ -36,7 +36,7 @@ namespace ReactiveMarbles.Locator.Tests
         /// </summary>
         [Fact]
         public void ServiceLocatorGetServicesGenericReturnsFromInterface() =>
-            GetFunctionExecutor().Run(() =>
+            XUnitFunctionExecutor.Run(() =>
             {
                 // Given
                 var fixture = ServiceLocator.Current();
@@ -47,7 +47,7 @@ namespace ReactiveMarbles.Locator.Tests
                 var result = fixture.GetServices<ITestService>();
 
                 // Then
-                result.Should().NotBeNull().And.HaveCount(2);
+                result.Should().NotBeNull().And.HaveCount(5);
             });
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace ReactiveMarbles.Locator.Tests
         /// </summary>
         [Fact]
         public void ServiceLocatorRemoveServiceGenericReturnsFromInterface() =>
-            GetFunctionExecutor().Run(() =>
+            XUnitFunctionExecutor.Run(() =>
             {
                 // Given
                 var fixture = ServiceLocator.Current();
@@ -76,7 +76,7 @@ namespace ReactiveMarbles.Locator.Tests
         [InlineData("")]
         [InlineData("contract")]
         public void ServiceLocatorRemoveServiceGenericWithContractReturnsFromInterface(string contract) =>
-            GetFunctionExecutor().Run(
+            XUnitFunctionExecutor.Run(
                 state =>
                 {
                     // Given
@@ -96,7 +96,7 @@ namespace ReactiveMarbles.Locator.Tests
         /// </summary>
         [Fact]
         public void ServiceLocatorRemoveServicesGenericReturnsFromInterface() =>
-            GetFunctionExecutor().Run(() =>
+            XUnitFunctionExecutor.Run(() =>
             {
                 // Given
                 var fixture = ServiceLocator.Current();
@@ -118,7 +118,7 @@ namespace ReactiveMarbles.Locator.Tests
         [InlineData("")]
         [InlineData("contract")]
         public void ServiceLocatorRemoveServicesGenericWithContractReturnsFromInterface(string contract) =>
-            GetFunctionExecutor().Run(
+            XUnitFunctionExecutor.Run(
                 state =>
                 {
                     // Given

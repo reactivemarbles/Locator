@@ -8,22 +8,25 @@ using Tmds.Utils;
 namespace ReactiveMarbles.Locator.Tests
 {
     /// <summary>
-    /// Configured <see cref="FunctionExecutor"/>.
+    /// Configured <see cref="Tmds.Utils.FunctionExecutor"/>.
     /// </summary>
     internal static class FunctionExecution
     {
-        public static FunctionExecutor GetFunctionExecutor() => new(o =>
-        {
-            o.StartInfo.RedirectStandardError = true;
-            o.OnExit = p =>
+        public static FunctionExecutor XUnitFunctionExecutor { get; } =
+            new(o =>
             {
-                if (p.ExitCode != 0)
+                o.StartInfo.RedirectStandardError = true;
+                o.OnExit = p =>
                 {
-                    string message = $"Function exit code failed with exit code: {p.ExitCode}" + Environment.NewLine +
-                                     p.StandardError.ReadToEnd();
-                    throw new Xunit.Sdk.XunitException(message);
-                }
-            };
-        });
+                    if (p.ExitCode != 0)
+                    {
+                        string message = $"Function exit code failed with exit code: {p.ExitCode}" +
+                                         Environment.NewLine +
+                                         p.StandardError.ReadToEnd();
+
+                        throw new Xunit.Sdk.XunitException(message);
+                    }
+                };
+            });
     }
 }

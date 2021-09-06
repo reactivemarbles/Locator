@@ -50,7 +50,7 @@ namespace ReactiveMarbles.Locator.Tests
         /// </summary>
         [Fact]
         public void ServiceLocatorRemoveServiceReturnsFromInterface() =>
-            ExecFunction.Run(() =>
+            XUnitFunctionExecutor.Run(() =>
             {
                 // Given
                 var fixture = ServiceLocator.Current();
@@ -71,7 +71,7 @@ namespace ReactiveMarbles.Locator.Tests
         [InlineData("")]
         [InlineData("contract")]
         public void ServiceLocatorRemoveServiceWithContractReturnsFromInterface(string contract) =>
-            GetFunctionExecutor().Run(
+            XUnitFunctionExecutor.Run(
                 state =>
                 {
                     // Given
@@ -91,7 +91,7 @@ namespace ReactiveMarbles.Locator.Tests
         /// </summary>
         [Fact]
         public void ServiceLocatorRemoveServicesReturnsFromInterface() =>
-            ExecFunction.Run(() =>
+            XUnitFunctionExecutor.Run(() =>
             {
                 // Given
                 var fixture = ServiceLocator.Current();
@@ -107,12 +107,9 @@ namespace ReactiveMarbles.Locator.Tests
         /// <summary>
         /// Tests the RemoveServices method removes the services.
         /// </summary>
-        /// <param name="contract">the contract.</param>
-        [Theory]
-        [InlineData("")]
-        [InlineData("contract")]
-        public void ServiceLocatorRemoveServicesWithContractReturnsFromInterface(string contract) =>
-            GetFunctionExecutor().Run(
+        [Fact]
+        public void ServiceLocatorRemoveServicesWithContractReturnsFromInterface() =>
+            XUnitFunctionExecutor.Run(
                 state =>
                 {
                     // Given
@@ -126,6 +123,6 @@ namespace ReactiveMarbles.Locator.Tests
                     // Then
                     fixture.GetService<ITestService>().Should().BeNull();
                 },
-                new[] { contract });
+                new[] { "contract" });
     }
 }
