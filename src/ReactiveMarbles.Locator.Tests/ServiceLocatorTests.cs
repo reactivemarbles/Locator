@@ -2,6 +2,7 @@
 // ReactiveUI Association Incorporated licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for full license information.
 
+using System;
 using System.Diagnostics.CodeAnalysis;
 using FluentAssertions;
 using Tmds.Utils;
@@ -107,8 +108,11 @@ namespace ReactiveMarbles.Locator.Tests
         /// <summary>
         /// Tests the RemoveServices method removes the services.
         /// </summary>
-        [Fact]
-        public void ServiceLocatorRemoveServicesWithContractReturnsFromInterface() =>
+        /// <param name="contract">the contract.</param>
+        [Theory]
+        [InlineData("")]
+        [InlineData("contract")]
+        public void ServiceLocatorRemoveServicesWithContractReturnsFromInterface(string contract) =>
             XUnitFunctionExecutor.Run(
                 state =>
                 {
@@ -123,6 +127,43 @@ namespace ReactiveMarbles.Locator.Tests
                     // Then
                     fixture.GetService<ITestService>().Should().BeNull();
                 },
-                new[] { "contract" });
+                new[] { contract });
+
+        /// <summary>
+        /// Tests the RemoveServices method removes the services.
+        /// </summary>
+        [Fact]
+        public void ServiceLocatorSetReturnsInstance() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var locator = new ServiceLocator();
+
+                // When
+                ServiceLocator.Set(locator);
+
+                // Then
+                ServiceLocator.Current().Should().Be(locator);
+            });
+
+        /// <summary>
+        /// Tests the RemoveServices method removes the services.
+        /// </summary>
+        [Fact]
+        public void ServiceLocatorSetNullThrows() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given, When
+                var exception = Record.Exception(() => ServiceLocator.Set(null!));
+
+                // Then
+                exception
+                    .Should()
+                    .BeOfType<ArgumentNullException>()
+                    .Which
+                    .ParamName
+                    .Should()
+                    .Be("serviceLocator");
+            });
     }
 }
