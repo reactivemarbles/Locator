@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for full license information.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace ReactiveMarbles.Locator
@@ -14,115 +13,46 @@ namespace ReactiveMarbles.Locator
     /// <seealso cref="System.IServiceProvider" />
     public sealed class ServiceLocator : IServiceLocator
     {
-        private static ServiceLocator? _current;
-        private readonly Dictionary<(Type ServiceType, string? Contract), List<Func<object?>>> _store;
+        private static IServiceLocator _current = new DefaultServiceLocator();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceLocator"/> class.
-        /// </summary>
-        private ServiceLocator() => _store = new();
-
-        /// <summary>
-        /// Currents this instance.
+        /// Gets the current instance.
         /// </summary>
         /// <returns>Service Locator instance.</returns>
-        public static ServiceLocator Current() => _current ??= new();
+        public static IServiceLocator Current() => _current;
 
         /// <summary>
-        /// Gets the service object of the specified type.
+        /// Sets the decorated instance of the <see cref="IServiceLocator"/>.
         /// </summary>
-        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <returns>
-        /// A service object of type <paramref name="serviceType">serviceType</paramref>.   -or-  null if there is no service object of type <paramref name="serviceType">serviceType</paramref>.
-        /// </returns>
+        /// <param name="serviceLocator">The new instance.</param>
+        public static void Set(IServiceLocator serviceLocator) => _current = serviceLocator ?? throw new ArgumentNullException(nameof(serviceLocator));
+
+        /// <inheritdoc />
         public object GetService(Type serviceType) =>
-            GetServices(serviceType).LastOrDefault()!;
+            _current.GetService(serviceType);
 
-        /// <summary>
-        /// Gets the service.
-        /// </summary>
-        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <param name="contract">The contract.</param>
-        /// <returns>
-        /// A service object of type <paramref name="serviceType">serviceType</paramref>.   -or-  null if there is no service object of type <paramref name="serviceType">serviceType</paramref>.
-        /// </returns>
+        /// <inheritdoc />
         public object GetService(Type serviceType, string? contract) =>
-            GetServices(serviceType, contract).LastOrDefault()!;
+            _current.GetService(serviceType, contract);
 
-        /// <summary>
-        /// Gets the services.
-        /// </summary>
-        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <param name="contract">The contract.</param>
-        /// <returns>
-        /// A service object[] of type <paramref name="serviceType">serviceType</paramref>.   -or-  null if there is no service object of type <paramref name="serviceType">serviceType</paramref>.
-        /// </returns>
+        /// <inheritdoc />
         public object[] GetServices(Type serviceType, string? contract = null) =>
-            (_store.TryGetValue((serviceType, contract ?? string.Empty), out var funcValue) ? funcValue?.Select(x => x()).ToArray() : Array.Empty<object>())!;
+            _current.GetServices(serviceType, contract);
 
-        /// <summary>
-        /// Adds the service.
-        /// </summary>
-        /// <param name="instanceFactory">The instance factory.</param>
-        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <param name="contract">The contract.</param>
-        public void AddService(Func<object?> instanceFactory, Type serviceType, string? contract = null)
-        {
-            var key = (serviceType, contract ?? string.Empty);
-            if (!HasService(serviceType, contract))
-            {
-                _store.Add(key, new());
-            }
+        /// <inheritdoc />
+        public void AddService(Func<object?> instanceFactory, Type serviceType, string? contract = null) =>
+            _current.AddService(instanceFactory, serviceType, contract);
 
-            _store[key].Add(instanceFactory);
-        }
-
-        /// <summary>
-        /// Determines whether the specified service type has service.
-        /// </summary>
-        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <param name="contract">The contract.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified service type has service; otherwise, <c>false</c>.
-        /// </returns>
+        /// <inheritdoc />
         public bool HasService(Type serviceType, string? contract = null) =>
-            _store.ContainsKey((serviceType, contract ?? string.Empty));
+            _current.HasService(serviceType, contract);
 
-        /// <summary>
-        /// Removes the service.
-        /// </summary>
-        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <param name="contract">The contract.</param>
-        public void RemoveService(Type serviceType, string? contract = null)
-        {
-            var key = (serviceType, contract ?? string.Empty);
-            if (!HasService(serviceType, contract))
-            {
-                return;
-            }
+        /// <inheritdoc />
+        public void RemoveService(Type serviceType, string? contract = null) =>
+            _current.RemoveService(serviceType, contract);
 
-            var list = _store[key];
-            list.RemoveAt(list.Count - 1);
-            if (list.Count == 0)
-            {
-                _store.Remove(key);
-            }
-        }
-
-        /// <summary>
-        /// Removes all services.
-        /// </summary>
-        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <param name="contract">The contract.</param>
-        public void RemoveServices(Type serviceType, string? contract = null)
-        {
-            var key = (serviceType, contract ?? string.Empty);
-            if (!HasService(serviceType, contract))
-            {
-                return;
-            }
-
-            _store.Remove(key);
-        }
+        /// <inheritdoc />
+        public void RemoveServices(Type serviceType, string? contract = null) =>
+            _current.RemoveServices(serviceType, contract);
     }
 }
