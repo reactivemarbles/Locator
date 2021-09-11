@@ -87,19 +87,20 @@ namespace ReactiveMarbles.Locator.Tests
         /// <summary>
         /// Tests the HasService method returns a true value for the interface.
         /// </summary>
-        /// <param name="contract">The contract.</param>
+        /// <param name="argument">The argument.</param>
         [Theory]
         [InlineData("contract")]
         [InlineData("interface")]
         [InlineData("abstract")]
-        public void HasServiceReturnsFromInterfaceWithContract(string contract) =>
+        public void HasServiceReturnsFromInterfaceWithContract(string argument) =>
             XUnitFunctionExecutor.Run(
                 args =>
                 {
                     // Given
+                    var contract = args[0];
                     var testService = new TestService();
                     var fixture = ServiceLocator.Current();
-                    fixture.AddService<ITestService>(() => testService, args[0]);
+                    fixture.AddService<ITestService>(() => testService, contract);
 
                     // When
                     var result = fixture.HasService<ITestService>(contract);
@@ -107,7 +108,7 @@ namespace ReactiveMarbles.Locator.Tests
                     // Then
                     result.Should().Be(true);
                 },
-                new[] { contract });
+                new[] { argument });
 
         /// <summary>
         /// Tests the GetService method returns a concretion for the interface.
