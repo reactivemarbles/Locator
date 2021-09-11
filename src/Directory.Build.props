@@ -7,6 +7,7 @@
     <DebugType>embedded</DebugType>
     <Authors>Glenn Watson;Rodney Littles II;Chris Pulman</Authors>
     <Copyright>Copyright (c) 2021 ReactiveUI Association Inc</Copyright>
+    <PackageIcon>logo.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/reactivemarbles/Locator</PackageProjectUrl>
     <PackageDescription>A simple locator for Reactive Marbles. Used when performance is key over a full feature set.</PackageDescription>
@@ -33,6 +34,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\images\logo.png" Pack="true" PackagePath="\"/>
     <None Include="$(MSBuildThisFileDirectory)..\LICENSE" Pack="true" PackagePath="LICENSE" />
   </ItemGroup>
 
