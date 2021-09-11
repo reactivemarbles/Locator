@@ -45,7 +45,7 @@ namespace ReactiveMarbles.Locator
         public bool TryGetService<T>(string contract, out T service) =>
             GetContractContainer<T>(contract).TryPeek(out service);
 
-        public bool HasService<T>() => false;
+        public bool HasService<T>() => Container<T>.Items.TryPeek(out _);
 
         /// <inheritdoc />
         public IEnumerable<T> GetServices<T>(string contract) =>
