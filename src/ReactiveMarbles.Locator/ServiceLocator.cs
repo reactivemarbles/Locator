@@ -3,7 +3,8 @@
 // See the LICENSE file in the project root for full license information.
 
 using System;
-using System.Linq;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace ReactiveMarbles.Locator
 {
@@ -25,34 +26,41 @@ namespace ReactiveMarbles.Locator
         /// Sets the decorated instance of the <see cref="IServiceLocator"/>.
         /// </summary>
         /// <param name="serviceLocator">The new instance.</param>
-        public static void Set(IServiceLocator serviceLocator) => _current = serviceLocator ?? throw new ArgumentNullException(nameof(serviceLocator));
+        public static void Set(IServiceLocator serviceLocator)
+        {
+            var locator = serviceLocator ?? throw new ArgumentNullException(nameof(serviceLocator));
+            Interlocked.Exchange(ref _current, locator);
+        }
 
-        /// <inheritdoc />
-        public object GetService(Type serviceType) =>
-            _current.GetService(serviceType);
+        /// <inheritdoc/>
+        public T GetService<T>() => _current.GetService<T>();
 
-        /// <inheritdoc />
-        public object GetService(Type serviceType, string? contract) =>
-            _current.GetService(serviceType, contract);
+        /// <inheritdoc/>
+        public T GetService<T>(string contract) => _current.GetService<T>(contract);
 
-        /// <inheritdoc />
-        public object[] GetServices(Type serviceType, string? contract = null) =>
-            _current.GetServices(serviceType, contract);
+        /// <inheritdoc/>
+        public IEnumerable<T> GetServices<T>() => _current.GetServices<T>();
 
-        /// <inheritdoc />
-        public void AddService(Func<object?> instanceFactory, Type serviceType, string? contract = null) =>
-            _current.AddService(instanceFactory, serviceType, contract);
+        /// <inheritdoc/>
+        public IEnumerable<T> GetServices<T>(string contract) => _current.GetServices<T>(contract);
 
-        /// <inheritdoc />
-        public bool HasService(Type serviceType, string? contract = null) =>
-            _current.HasService(serviceType, contract);
+        /// <inheritdoc/>
+        public bool TryGetService<T>(out T service) => _current.TryGetService(out service);
 
-        /// <inheritdoc />
-        public void RemoveService(Type serviceType, string? contract = null) =>
-            _current.RemoveService(serviceType, contract);
+        /// <inheritdoc/>
+        public bool TryGetService<T>(string contract, out T service) => _current.TryGetService(contract, out service);
 
-        /// <inheritdoc />
-        public void RemoveServices(Type serviceType, string? contract = null) =>
-            _current.RemoveServices(serviceType, contract);
+        /// <inheritdoc/>
+        public bool HasService<T>() => _current.HasService<T>();
+
+        /// <inheritdoc/>
+        public bool HasService<T>(string contract) => _current.HasService<T>(contract);
+
+        /// <inheritdoc/>
+        public void AddService<T>(Func<T> instanceFactory) => _current.AddService(instanceFactory);
+
+        /// <inheritdoc/>
+        public void AddService<T>(Func<T> instanceFactory, string contract) =>
+            _current.AddService(instanceFactory, contract);
     }
 }

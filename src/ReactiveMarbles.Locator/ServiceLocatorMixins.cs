@@ -3,9 +3,6 @@
 // See the LICENSE file in the project root for full license information.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 
 namespace ReactiveMarbles.Locator
@@ -18,122 +15,66 @@ namespace ReactiveMarbles.Locator
         /// <summary>
         /// Adds the service.
         /// </summary>
-        /// <typeparam name="T">The type used for registration.</typeparam>
+        /// <typeparam name="TContract">The type of the interface.</typeparam>
+        /// <typeparam name="TConcrete">The type of the concrete.</typeparam>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <param name="contract">The contract.</param>
+        public static void AddService<TContract, TConcrete>(this IEditServices serviceLocator, string contract)
+            where TConcrete : TContract, new() =>
+            serviceLocator.AddService<TContract>(() => new TConcrete(), contract);
+
+        /// <summary>
+        /// Adds the singleton.
+        /// </summary>
+        /// <typeparam name="TContract">The type used for registration.</typeparam>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="contract">The contract.</param>
+        public static void AddSingleton<TContract>(this IEditServices serviceLocator, object instance, string contract) =>
+            serviceLocator.AddService(() => (TContract)instance, contract);
+
+        /// <summary>
+        /// Adds the singleton.
+        /// </summary>
+        /// <typeparam name="TContract">The type of the interface.</typeparam>
+        /// <typeparam name="TConcrete">The type of the concrete.</typeparam>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <param name="contract">The contract.</param>
+        public static void AddSingleton<TContract, TConcrete>(this IEditServices serviceLocator, string contract)
+         where TConcrete : TContract, new()
+        {
+            var instance = new TConcrete();
+            serviceLocator.AddService<TContract>(() => instance, contract);
+        }
+
+        /// <summary>
+        /// Adds the lazy singleton.
+        /// </summary>
+        /// <typeparam name="TContract">The type of the interface.</typeparam>
+        /// <typeparam name="TConcrete">The type of the concrete.</typeparam>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <param name="contract">The contract.</param>
+        public static void AddLazySingleton<TContract, TConcrete>(this IEditServices serviceLocator, string contract)
+            where TConcrete : TContract, new()
+        {
+            TConcrete InstanceFactory() => new();
+            var val = new Lazy<TConcrete>(InstanceFactory, LazyThreadSafetyMode.ExecutionAndPublication);
+            serviceLocator.AddService<TContract>(() => val.Value, contract);
+        }
+
+        /// <summary>
+        /// Adds the lazy singleton.
+        /// </summary>
+        /// <typeparam name="TContract">The type of the interface.</typeparam>
+        /// <typeparam name="TConcrete">The type of the concrete.</typeparam>
         /// <param name="serviceLocator">The service locator.</param>
         /// <param name="instanceFactory">The instance factory.</param>
         /// <param name="contract">The contract.</param>
-        public static void AddService<T>(this IEditServices serviceLocator, Func<object?> instanceFactory, string? contract = null) => serviceLocator.AddService(instanceFactory, typeof(T), contract);
-
-        /// <summary>
-        /// Adds the service.
-        /// </summary>
-        /// <typeparam name="TInterface">The type of the interface.</typeparam>
-        /// <typeparam name="TConcrete">The type of the concrete.</typeparam>
-        /// <param name="serviceLocator">The service locator.</param>
-        /// <param name="contract">The contract.</param>
-        public static void AddService<TInterface, TConcrete>(this IEditServices serviceLocator, string? contract = null)
-            where TConcrete : new() =>
-            serviceLocator.AddService(() => new TConcrete(), typeof(TInterface), contract);
-
-        /// <summary>
-        /// Adds the singleton.
-        /// </summary>
-        /// <typeparam name="T">The type used for registration.</typeparam>
-        /// <param name="serviceLocator">The service locator.</param>
-        /// <param name="instance">The instance.</param>
-        /// <param name="contract">The contract.</param>
-        public static void AddSingleton<T>(this IEditServices serviceLocator, object instance, string? contract = null) => serviceLocator.AddService(() => instance, typeof(T), contract);
-
-        /// <summary>
-        /// Adds the singleton.
-        /// </summary>
-        /// <typeparam name="TInterface">The type of the interface.</typeparam>
-        /// <typeparam name="TConcrete">The type of the concrete.</typeparam>
-        /// <param name="serviceLocator">The service locator.</param>
-        /// <param name="contract">The contract.</param>
-        public static void AddSingleton<TInterface, TConcrete>(this IEditServices serviceLocator, string? contract = null)
-         where TConcrete : new()
+        public static void AddLazySingleton<TContract, TConcrete>(this IEditServices serviceLocator, Func<TConcrete> instanceFactory, string contract)
+            where TConcrete : TContract
         {
-            var instance = new TConcrete();
-            serviceLocator.AddService(() => instance, typeof(TInterface), contract);
+            var val = new Lazy<TConcrete>(instanceFactory, LazyThreadSafetyMode.ExecutionAndPublication);
+            serviceLocator.AddService<TContract>(() => val.Value, contract);
         }
-
-        /// <summary>
-        /// Adds the lazy singleton.
-        /// </summary>
-        /// <typeparam name="T">The type used for registration.</typeparam>
-        /// <param name="serviceLocator">The service locator.</param>
-        /// <param name="instance">The instance.</param>
-        /// <param name="contract">The contract.</param>
-        public static void AddLazySingleton<T>(this IEditServices serviceLocator, object? instance, string? contract = null)
-        {
-            object? InstanceFactory() => instance;
-            var val = new Lazy<object?>(InstanceFactory, LazyThreadSafetyMode.ExecutionAndPublication);
-            serviceLocator.AddService(() => val.Value, typeof(T), contract);
-        }
-
-        /// <summary>
-        /// Adds the lazy singleton.
-        /// </summary>
-        /// <typeparam name="TInterface">The type of the interface.</typeparam>
-        /// <typeparam name="TConcrete">The type of the concrete.</typeparam>
-        /// <param name="serviceLocator">The service locator.</param>
-        /// <param name="contract">The contract.</param>
-        public static void AddLazySingleton<TInterface, TConcrete>(this IEditServices serviceLocator, string? contract = null)
-            where TConcrete : new()
-        {
-            object? InstanceFactory() => new TConcrete();
-            var val = new Lazy<object?>(InstanceFactory, LazyThreadSafetyMode.ExecutionAndPublication);
-            serviceLocator.AddService(() => val.Value, typeof(TInterface), contract);
-        }
-
-        /// <summary>
-        /// Gets the service.
-        /// </summary>
-        /// <typeparam name="T">The type used for registration.</typeparam>
-        /// <param name="serviceLocator">The service locator.</param>
-        /// <param name="contract">The contract.</param>
-        /// <returns>An instance of the type used for registration.</returns>
-        public static T? GetService<T>(this IGetServices serviceLocator, string? contract = null) =>
-            (T?)serviceLocator.GetService(typeof(T), contract);
-
-        /// <summary>
-        /// Gets the service.
-        /// </summary>
-        /// <typeparam name="TInterface">The type of the interface.</typeparam>
-        /// <typeparam name="TConcrete">The type of the concrete.</typeparam>
-        /// <param name="serviceLocator">The service locator.</param>
-        /// <param name="contract">The contract.</param>
-        /// <returns>An instance of the type used for registration.</returns>
-        public static TConcrete? GetService<TInterface, TConcrete>(this IGetServices serviceLocator, string? contract = null) =>
-            (TConcrete?)serviceLocator.GetService(typeof(TInterface), contract);
-
-        /// <summary>
-        /// Gets the service.
-        /// </summary>
-        /// <typeparam name="T">The type used for registration.</typeparam>
-        /// <param name="serviceLocator">The service locator.</param>
-        /// <param name="contract">The contract.</param>
-        /// <returns>An instance of the type used for registration.</returns>
-        public static IEnumerable<T?> GetServices<T>(this IGetServices serviceLocator, string? contract = null) =>
-            (IEnumerable<T?>)serviceLocator.GetServices(typeof(T), contract).Cast<T>();
-
-        /// <summary>
-        /// Removes the service.
-        /// </summary>
-        /// <typeparam name="T">The type used for registration.</typeparam>
-        /// <param name="serviceLocator">The service locator.</param>
-        /// <param name="contract">The contract.</param>
-        public static void RemoveService<T>(this IEditServices serviceLocator, string? contract = null) =>
-            serviceLocator.RemoveService(typeof(T), contract);
-
-        /// <summary>
-        /// Removes the services.
-        /// </summary>
-        /// <typeparam name="T">The type used for registration.</typeparam>
-        /// <param name="serviceLocator">The service locator.</param>
-        /// <param name="contract">The contract.</param>
-        public static void RemoveServices<T>(this IEditServices serviceLocator, string? contract = null) =>
-            serviceLocator.RemoveServices(typeof(T), contract);
     }
 }

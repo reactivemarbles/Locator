@@ -5,7 +5,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using FluentAssertions;
-using Tmds.Utils;
 using Xunit;
 using static ReactiveMarbles.Locator.Tests.FunctionExecution;
 
@@ -22,7 +21,7 @@ namespace ReactiveMarbles.Locator.Tests
         /// The Service locator has an instance.
         /// </summary>
         [Fact]
-        public void ServiceLocatorHasInstance()
+        public void HasInstance()
         {
             var fixture = ServiceLocator.Current();
 
@@ -30,110 +29,10 @@ namespace ReactiveMarbles.Locator.Tests
         }
 
         /// <summary>
-        /// Tests the GetService method returns a concretion for the interface.
-        /// </summary>
-        [Fact]
-        public void ServiceLocatorGetServiceReturnsFromInterface()
-        {
-            // Given
-            var fixture = ServiceLocator.Current();
-            fixture.AddService<ITestService>(() => new TestService());
-
-            // When
-            var result = fixture.GetService(typeof(ITestService));
-
-            // Then
-            result.Should().NotBeNull();
-        }
-
-        /// <summary>
-        /// Tests the RemoveService method removes the service.
-        /// </summary>
-        [Fact]
-        public void ServiceLocatorRemoveServiceReturnsFromInterface() =>
-            XUnitFunctionExecutor.Run(() =>
-            {
-                // Given
-                var fixture = ServiceLocator.Current();
-                fixture.AddService<ITestService>(() => new TestService());
-
-                // When
-                fixture.RemoveService(typeof(ITestService));
-
-                // Then
-                fixture.GetService<ITestService>().Should().BeNull();
-            });
-
-        /// <summary>
-        /// Tests the RemoveService method removes the service.
-        /// </summary>
-        /// <param name="contract">the contract.</param>
-        [Theory]
-        [InlineData("")]
-        [InlineData("contract")]
-        public void ServiceLocatorRemoveServiceWithContractReturnsFromInterface(string contract) =>
-            XUnitFunctionExecutor.Run(
-                state =>
-                {
-                    // Given
-                    var fixture = ServiceLocator.Current();
-                    fixture.AddService<ITestService>(() => new TestService(), state[0]);
-
-                    // When
-                    fixture.RemoveService(typeof(ITestService), state[0]);
-
-                    // Then
-                    fixture.GetService<ITestService>().Should().BeNull();
-                },
-                new[] { contract });
-
-        /// <summary>
         /// Tests the RemoveServices method removes the services.
         /// </summary>
         [Fact]
-        public void ServiceLocatorRemoveServicesReturnsFromInterface() =>
-            XUnitFunctionExecutor.Run(() =>
-            {
-                // Given
-                var fixture = ServiceLocator.Current();
-                fixture.AddService<ITestService>(() => new TestService());
-
-                // When
-                fixture.RemoveServices(typeof(ITestService));
-
-                // Then
-                fixture.GetService<ITestService>().Should().BeNull();
-            });
-
-        /// <summary>
-        /// Tests the RemoveServices method removes the services.
-        /// </summary>
-        /// <param name="contract">the contract.</param>
-        [Theory]
-        [InlineData("")]
-        [InlineData("contract")]
-        public void ServiceLocatorRemoveServicesWithContractReturnsFromInterface(string contract) =>
-            XUnitFunctionExecutor.Run(
-                state =>
-                {
-                    // Given
-                    var fixture = ServiceLocator.Current();
-                    fixture.AddService<ITestService>(() => new TestService(), state[0]);
-                    fixture.AddService<ITestService>(() => new TestService(), state[0]);
-
-                    // When
-                    fixture.RemoveServices(typeof(ITestService), state[0]);
-
-                    // Then
-                    fixture.GetService<ITestService>().Should().BeNull();
-                },
-                new[] { contract });
-
-        /// <summary>
-        /// Tests the RemoveServices method removes the services.
-        /// </summary>
-        [Fact]
-        public void ServiceLocatorSetReturnsInstance() =>
+        public void SetReturnsInstance() =>
             XUnitFunctionExecutor.Run(() =>
             {
                 // Given
@@ -147,10 +46,10 @@ namespace ReactiveMarbles.Locator.Tests
             });
 
         /// <summary>
-        /// Tests the RemoveServices method removes the services.
+        /// Tests the Set method throws an exception when a null parameter passed.
         /// </summary>
         [Fact]
-        public void ServiceLocatorSetNullThrows() =>
+        public void SetNullThrows() =>
             XUnitFunctionExecutor.Run(() =>
             {
                 // Given, When
@@ -165,5 +64,232 @@ namespace ReactiveMarbles.Locator.Tests
                     .Should()
                     .Be("serviceLocator");
             });
+
+        /// <summary>
+        /// Tests the HasService method returns a true value for the interface.
+        /// </summary>
+        [Fact]
+        public void HasServiceReturnsFromInterface() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var testService = new TestService();
+                var fixture = ServiceLocator.Current();
+                fixture.AddService<ITestService>(() => testService);
+
+                // When
+                var result = fixture.HasService<ITestService>();
+
+                // Then
+                result.Should().Be(true);
+            });
+
+        /// <summary>
+        /// Tests the HasService method returns a true value for the interface.
+        /// </summary>
+        /// <param name="argument">The argument.</param>
+        [Theory]
+        [InlineData("contract")]
+        [InlineData("interface")]
+        [InlineData("abstract")]
+        public void HasServiceReturnsFromInterfaceWithContract(string argument) =>
+            XUnitFunctionExecutor.Run(
+                args =>
+                {
+                    // Given
+                    var contract = args[0];
+                    var testService = new TestService();
+                    var fixture = ServiceLocator.Current();
+                    fixture.AddService<ITestService>(() => testService, contract);
+
+                    // When
+                    var result = fixture.HasService<ITestService>(contract);
+
+                    // Then
+                    result.Should().Be(true);
+                },
+                new[] { argument });
+
+        /// <summary>
+        /// Tests the GetService method returns a concretion for the interface.
+        /// </summary>
+        [Fact]
+        public void GetServiceReturnsFromInterface() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var testService = new TestService();
+                var fixture = ServiceLocator.Current();
+                fixture.AddService<ITestService>(() => testService);
+
+                // When
+                var result = fixture.GetService<ITestService>();
+
+                // Then
+                result.Should().Be(testService);
+            });
+
+        /// <summary>
+        /// Tests the GetService method returns a concretion for the interface.
+        /// </summary>
+        [Fact]
+        public void GetServiceThrowsIfNotFound() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var fixture = ServiceLocator.Current();
+
+                // When
+                var result = Record.Exception(() => fixture.GetService<ITestService>());
+
+                // Then
+                result
+                    .Should()
+                    .BeOfType<InvalidOperationException>()
+                    .Which
+                    .Message
+                    .Should()
+                    .Be("No service for the provided type exists.");
+            });
+
+        /// <summary>
+        /// Tests the GetService method returns a concretion for the interface.
+        /// </summary>
+        /// <param name="argument">The test argument.</param>
+        [Theory]
+        [InlineData("contract")]
+        [InlineData("interface")]
+        [InlineData("abstract")]
+        public void GetServiceReturnsFromInterfaceWithContract(string argument) =>
+            XUnitFunctionExecutor.Run(
+                args =>
+                {
+                    // Given
+                    var testService = new TestService();
+                    var fixture = ServiceLocator.Current();
+                    var contract = args[0];
+                    fixture.AddService<ITestService>(() => testService, contract);
+
+                    // When
+                    var result = fixture.GetService<ITestService>(contract);
+
+                    // Then
+                    result.Should().Be(testService);
+                },
+                new[] { argument });
+
+        /// <summary>
+        /// Tests the GetService method returns a concretion for the interface.
+        /// </summary>
+        /// <param name="contract">The contract.</param>
+        [Theory]
+        [InlineData("contract")]
+        [InlineData("interface")]
+        [InlineData("abstract")]
+        public void GetServiceWithContractThrowsIfNotFound(string contract) =>
+            XUnitFunctionExecutor.Run(
+                args =>
+                {
+                    // Given
+                    var fixture = ServiceLocator.Current();
+
+                    // When
+                    var result = Record.Exception(() => fixture.GetService<ITestService>(args[0]));
+
+                    // Then
+                    result
+                        .Should()
+                        .BeOfType<InvalidOperationException>()
+                        .Which
+                        .Message
+                        .Should()
+                        .Be("No service for the provided type exists.");
+                },
+                new[] { contract });
+
+        /// <summary>
+        /// Tests the GetService method returns a concretion for the interface.
+        /// </summary>
+        [Fact]
+        public void TryGetServiceReturnsReturnsTrue() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var testService = new TestService();
+                var fixture = ServiceLocator.Current();
+                fixture.AddService<ITestService>(() => testService);
+
+                // When
+                var result = fixture.TryGetService<ITestService>(out var service);
+
+                // Then
+                result.Should().Be(true);
+                service.Should().Be(testService);
+            });
+
+        /// <summary>
+        /// Tests the GetService method returns a concretion for the interface.
+        /// </summary>
+        [Fact]
+        public void TryGetServiceReturnsFalse() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var fixture = ServiceLocator.Current();
+
+                // When
+                var result = fixture.TryGetService<ITestService>(out var service);
+
+                // Then
+                result.Should().Be(false);
+                service.Should().Be(null);
+            });
+
+        /// <summary>
+        /// Tests the GetServices method returns a concretion for the interface.
+        /// </summary>
+        [Fact]
+        public void GetServicesReturnsFromInterface() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var testServiceOne = new TestService();
+                var testServiceTwo = new TestService();
+                var fixture = ServiceLocator.Current();
+                fixture.AddService<ITestService>(() => testServiceOne);
+                fixture.AddService<ITestService>(() => testServiceTwo);
+
+                // When
+                var result = fixture.GetServices<ITestService>();
+
+                // Then
+                result.Should().Contain(new[] { testServiceOne, testServiceTwo }).And.HaveCount(2);
+            });
+
+        /// <summary>
+        /// Tests the GetServices method returns a concretion for the interface.
+        /// </summary>
+        /// <param name="argument">The argument.</param>
+        [Theory]
+        [InlineData("contract")]
+        [InlineData("interface")]
+        [InlineData("abstract")]
+        public void GetServicesReturnsFromInterfaceWithContract(string argument) =>
+            XUnitFunctionExecutor.Run(
+                args =>
+                {
+                    // Given
+                    var contract = args[0];
+                    var fixture = ServiceLocator.Current();
+                    fixture.AddService<ITestService>(() => new TestService(), contract);
+                    fixture.AddService<ITestService>(() => new TestService(), contract);
+
+                    // When
+                    var result = fixture.GetServices<ITestService>(contract);
+
+                    // Then
+                    result.Should().NotBeNull().And.HaveCount(2);
+                },
+                new[] { argument });
     }
 }

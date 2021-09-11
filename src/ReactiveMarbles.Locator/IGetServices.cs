@@ -3,42 +3,87 @@
 // See the LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
 
 namespace ReactiveMarbles.Locator
 {
     /// <summary>
     /// I Get Services.
     /// </summary>
-    public interface IGetServices : IServiceProvider
+    public interface IGetServices
     {
         /// <summary>
         /// Gets the service.
         /// </summary>
-        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <param name="contract">The contract.</param>
+        /// <typeparam name="T">The service type.</typeparam>
         /// <returns>
-        /// A service object of type <paramref name="serviceType">serviceType</paramref>.   -or-  null if there is no service object of type <paramref name="serviceType">serviceType</paramref>.
+        /// A service of the provided type.
         /// </returns>
-        object GetService(Type serviceType, string? contract);
+        T GetService<T>();
+
+        /// <summary>
+        /// Gets the service.
+        /// </summary>
+        /// <param name="contract">The contract.</param>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <returns>
+        /// A service of the provided type.
+        /// </returns>
+        T GetService<T>(string contract);
 
         /// <summary>
         /// Gets the services.
         /// </summary>
-        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <param name="contract">The contract.</param>
+        /// <typeparam name="T">The service type.</typeparam>
         /// <returns>
-        /// A service object[] of type <paramref name="serviceType">serviceType</paramref>.   -or-  null if there is no service object of type <paramref name="serviceType">serviceType</paramref>.
+        /// An enumerable of services for the provided type.
         /// </returns>
-        object[] GetServices(Type serviceType, string? contract = null);
+        IEnumerable<T> GetServices<T>();
+
+        /// <summary>
+        /// Gets the services.
+        /// </summary>
+        /// <param name="contract">The contract.</param>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <returns>
+        /// An enumerable of services for the provided type.
+        /// </returns>
+        IEnumerable<T> GetServices<T>(string contract);
+
+        /// <summary>
+        /// Try and get the service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <returns>A value indicating whether the service exists.</returns>
+        bool TryGetService<T>(out T service);
+
+        /// <summary>
+        /// Try and get the service.
+        /// </summary>
+        /// <param name="contract">The contract.</param>
+        /// <param name="service">The service.</param>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <returns>A value indicating whether the service exists.</returns>
+        bool TryGetService<T>(string contract, out T service);
 
         /// <summary>
         /// Determines whether the specified service type has service.
         /// </summary>
-        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <param name="contract">The contract.</param>
+        /// <typeparam name="T">The type.</typeparam>
         /// <returns>
         ///   <c>true</c> if the specified service type has service; otherwise, <c>false</c>.
         /// </returns>
-        bool HasService(Type serviceType, string? contract = null);
+        bool HasService<T>();
+
+        /// <summary>
+        /// Determines whether the specified service type has service.
+        /// </summary>
+        /// <param name="contract">The contract.</param>
+        /// <typeparam name="T">The type.</typeparam>
+        /// <returns>
+        ///   <c>true</c> if the specified service type has service; otherwise, <c>false</c>.
+        /// </returns>
+        bool HasService<T>(string contract);
     }
 }
