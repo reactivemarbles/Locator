@@ -62,5 +62,34 @@ namespace ReactiveMarbles.Locator
         /// <inheritdoc/>
         public void AddService<T>(Func<T> instanceFactory, string contract) =>
             _current.AddService(instanceFactory, contract);
+
+        /// <inheritdoc/>
+        public void AddSingleton<TContract>(TContract instance) =>
+            _current.AddSingleton(instance);
+
+        /// <inheritdoc/>
+        public void AddSingleton<TContract>(TContract instance, string contract) =>
+            _current.AddSingleton(instance, contract);
+
+        /// <inheritdoc/>
+        public void AddSingleton<TContract>(Func<TContract> instanceFactory) => _current.AddSingleton(instanceFactory);
+
+        /// <inheritdoc/>
+        public void AddSingleton<TContract>(Func<TContract> instanceFactory, string contract) =>
+            _current.AddSingleton(instanceFactory, contract);
+
+        /// <inheritdoc/>
+        public void AddLazySingleton<TContract>(Lazy<TContract> lazy) => _current.AddLazySingleton(lazy);
+
+        /// <inheritdoc/>
+        public void AddLazySingleton<TContract>(Func<TContract> instanceFactory, LazyThreadSafetyMode threadSafetyMode) =>
+            _current.AddLazySingleton(instanceFactory, threadSafetyMode);
+
+        /// <inheritdoc/>
+        public void AddLazySingleton<TContract>(Lazy<TContract> lazy, string contract) => _current.AddLazySingleton(lazy, contract);
+
+        /// <inheritdoc/>
+        public void AddLazySingleton<TContract>(Func<TContract> instanceFactory, string contract, LazyThreadSafetyMode threadSafetyMode) =>
+            _current.AddLazySingleton(instanceFactory, contract, threadSafetyMode);
     }
 }
