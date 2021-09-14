@@ -31,18 +31,17 @@ namespace ReactiveMarbles.Locator
         public IEnumerable<T> GetServices<T>() => Container<T>.GetAll();
 
         /// <inheritdoc />
-        public bool TryGetService<T>(out T service) =>
-            Container<T>.Items.TryPeek(out service);
+        public bool TryGetService<T>(out T service) => Container<T>.TryGet(out service);
 
         /// <inheritdoc />
         public bool TryGetService<T>(string contract, out T service) =>
-            GetContractContainer<T>(contract).TryPeek(out service);
+            ContractContainer<T>.TryGet(contract, out service);
 
         /// <inheritdoc />
         public bool HasService<T>() =>
-            !Container<T>.Items.IsEmpty ||
+            !Container<T>.Instances.IsEmpty ||
             !Container<T>.Factories.IsEmpty ||
-            !Container<T>.Lazy.IsEmpty;
+            !Container<T>.Lazies.IsEmpty;
 
         /// <inheritdoc />
         public IEnumerable<T> GetServices<T>(string contract) =>
@@ -115,26 +114,26 @@ namespace ReactiveMarbles.Locator
 
         private static class Container<T>
         {
-            public static ConcurrentStack<T> Items { get; } = new();
+            public static ConcurrentStack<T> Instances { get; } = new();
 
-            public static ConcurrentStack<Lazy<T>> Lazy { get; } = new();
+            public static ConcurrentStack<Lazy<T>> Lazies { get; } = new();
 
             public static ConcurrentStack<Func<T>> Factories { get; } = new();
 
-            public static void Add(T service, ContainerScope scope) => ApplyScope(Items, scope).Push(service);
+            public static void Add(T service, ContainerScope scope) => ApplyScope(Instances, scope).Push(service);
 
             public static void Add(Func<T> service, ContainerScope scope) => ApplyScope(Factories, scope).Push(service);
 
             public static void AddLazy(Func<T> factory, LazyThreadSafetyMode threadSafetyMode, ContainerScope scope) =>
-                ApplyScope(Lazy, scope).Push(new Lazy<T>(factory, threadSafetyMode));
+                ApplyScope(Lazies, scope).Push(new Lazy<T>(factory, threadSafetyMode));
 
-            public static void AddLazy(Lazy<T> lazy, ContainerScope scope) => ApplyScope(Lazy, scope).Push(lazy);
+            public static void AddLazy(Lazy<T> lazy, ContainerScope scope) => ApplyScope(Lazies, scope).Push(lazy);
 
             public static T Get()
             {
-                if (Lazy.TryPop(out var lazy))
+                if (Lazies.TryPop(out var lazy))
                 {
-                    Items.Push(lazy.Value);
+                    Instances.Push(lazy.Value);
                     return lazy.Value;
                 }
 
@@ -143,7 +142,7 @@ namespace ReactiveMarbles.Locator
                     return factory();
                 }
 
-                if (Items.TryPeek(out var service))
+                if (Instances.TryPeek(out var service))
                 {
                     return service;
                 }
@@ -151,15 +150,33 @@ namespace ReactiveMarbles.Locator
                 throw new InvalidOperationException("No service for the provided type exists.");
             }
 
-            public static IEnumerable<T> GetAll()
+            public static bool TryGet(out T instance)
             {
-                if (!Lazy.IsEmpty)
+                if (Lazies.TryPop(out var lazy))
                 {
-                    Items.PushRange(Lazy.Select(x => x.Value).ToArray());
-                    Lazy.Clear();
+                    Instances.Push(lazy.Value);
+                    instance = lazy.Value;
+                    return true;
                 }
 
-                return Items.Concat(Factories.Select(x => x.Invoke()));
+                if (Factories.TryPeek(out var factory))
+                {
+                    instance = factory();
+                    return true;
+                }
+
+                return Instances.TryPeek(out instance);
+            }
+
+            public static IEnumerable<T> GetAll()
+            {
+                if (!Lazies.IsEmpty)
+                {
+                    Instances.PushRange(Lazies.Select(x => x.Value).ToArray());
+                    Lazies.Clear();
+                }
+
+                return Instances.Concat(Factories.Select(x => x.Invoke()));
             }
         }
 
@@ -214,6 +231,24 @@ namespace ReactiveMarbles.Locator
                 }
 
                 throw new InvalidOperationException("No service for the provided type exists.");
+            }
+
+            public static bool TryGet(string contract, out T instance)
+            {
+                if (GetLazyContractContainer<T>(contract).TryPop(out var lazy))
+                {
+                    GetContractContainer<T>(contract).Push(lazy.Value);
+                    instance = lazy.Value;
+                    return true;
+                }
+
+                if (GetFactoryContractContainer<T>(contract).TryPeek(out var factory))
+                {
+                    instance = factory();
+                    return true;
+                }
+
+                return GetContractContainer<T>(contract).TryPeek(out instance);
             }
 
             public static IEnumerable<T> GetAll(string contract)
