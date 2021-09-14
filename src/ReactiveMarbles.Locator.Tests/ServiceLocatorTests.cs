@@ -4,6 +4,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using FluentAssertions;
 using Xunit;
 using static ReactiveMarbles.Locator.Tests.FunctionExecution;
@@ -291,5 +292,260 @@ namespace ReactiveMarbles.Locator.Tests
                     result.Should().NotBeNull().And.HaveCount(2);
                 },
                 new[] { argument });
+
+        /// <summary>
+        /// Tests the AddLazySingleton method adds an instance.
+        /// </summary>
+        [Fact]
+        public void AddSingletonShouldReturnInstance() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var fixture = ServiceLocator.Current();
+                fixture.AddSingleton<ITestService>(new TestService());
+
+                // When
+                var result = fixture.GetService<ITestService>();
+
+                // Then
+                result.Should().NotBeNull().And.BeOfType<TestService>();
+            });
+
+        /// <summary>
+        /// Tests the AddSingleton method adds a single instance each time.
+        /// </summary>
+        [Fact]
+        public void AddSingletonShouldRegisterOneInstance() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var testService = new TestService();
+                var fixture = ServiceLocator.Current();
+                fixture.AddSingleton<ITestService>(testService);
+                fixture.AddSingleton<ITestService>(new TestService());
+
+                // When
+                var result = fixture.GetServices<ITestService>();
+
+                // Then
+                result.Should().NotBeNull().And.HaveCount(1);
+            });
+
+        /// <summary>
+        /// Tests the AddSingleton method adds an instance.
+        /// </summary>
+        [Fact]
+        public void AddSingletonWithFactoryShouldReturnInstance() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var fixture = ServiceLocator.Current();
+                fixture.AddSingleton<ITestService>(() => new TestService());
+
+                // When
+                var result = fixture.GetService<ITestService>();
+
+                // Then
+                result.Should().NotBeNull().And.BeOfType<TestService>();
+            });
+
+        /// <summary>
+        /// Tests the AddSingleton method adds a single instance each time.
+        /// </summary>
+        [Fact]
+        public void AddSingletonWithFactoryShouldRegisterOneInstance() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var testService = new TestService();
+                var fixture = ServiceLocator.Current();
+                fixture.AddSingleton<ITestService>(() => testService);
+                fixture.AddSingleton<ITestService>(() => new TestService());
+
+                // When
+                var result = fixture.GetServices<ITestService>();
+
+                // Then
+                result.Should().NotBeNull().And.HaveCount(1);
+            });
+
+        /// <summary>
+        /// Tests the AddSingleton method adds an instance.
+        /// </summary>
+        /// <param name="arguments">The arguments.</param>
+        [Theory]
+        [InlineData("contract")]
+        [InlineData("interface")]
+        [InlineData("abstract")]
+        public void AddSingletonWithContractShouldReturnInstance(string arguments) =>
+            XUnitFunctionExecutor.Run(
+                args =>
+                {
+                    // Given
+                    var contract = args[0];
+                    var fixture = ServiceLocator.Current();
+                    fixture.AddSingleton<ITestService>(new TestService(), contract);
+
+                    // When
+                    var result = fixture.GetService<ITestService>(contract);
+
+                    // Then
+                    result.Should().NotBeNull().And.BeOfType<TestService>();
+                },
+                new[] { arguments });
+
+        /// <summary>
+        /// Tests the AddSingleton method adds a single instance each time.
+        /// </summary>
+        /// <param name="arguments">The arguments.</param>
+        [Theory]
+        [InlineData("contract")]
+        [InlineData("interface")]
+        [InlineData("abstract")]
+        public void AddSingletonWithContractShouldRegisterOneInstance(string arguments) =>
+            XUnitFunctionExecutor.Run(
+                args =>
+                {
+                    // Given
+                    var contract = args[0];
+                    var testService = new TestService();
+                    var fixture = ServiceLocator.Current();
+                    fixture.AddSingleton<ITestService>(testService, contract);
+                    fixture.AddSingleton<ITestService>(new TestService(), contract);
+
+                    // When
+                    var result = fixture.GetServices<ITestService>(contract);
+
+                    // Then
+                    result.Should().NotBeNull().And.HaveCount(1);
+                },
+                new[] { arguments });
+
+        /// <summary>
+        /// Tests the AddSingleton method adds an instance.
+        /// </summary>
+        /// <param name="arguments">The arguments.</param>
+        [Theory]
+        [InlineData("contract")]
+        [InlineData("interface")]
+        [InlineData("abstract")]
+        public void AddSingletonWithContractAndFactoryShouldReturnInstance(string arguments) =>
+            XUnitFunctionExecutor.Run(
+                args =>
+                {
+                    // Given
+                    var contract = args[0];
+                    var fixture = ServiceLocator.Current();
+                    fixture.AddSingleton<ITestService>(() => new TestService(), contract);
+
+                    // When
+                    var result = fixture.GetService<ITestService>(contract);
+
+                    // Then
+                    result.Should().NotBeNull().And.BeOfType<TestService>();
+                },
+                new[] { arguments });
+
+        /// <summary>
+        /// Tests the AddSingleton method adds a single instance each time.
+        /// </summary>
+        /// <param name="arguments">The arguments.</param>
+        [Theory]
+        [InlineData("contract")]
+        [InlineData("interface")]
+        [InlineData("abstract")]
+        public void AddSingletonWithContractAndFactoryShouldRegisterOneInstance(string arguments) =>
+            XUnitFunctionExecutor.Run(
+                args =>
+                {
+                    // Given
+                    var contract = args[0];
+                    var testService = new TestService();
+                    var fixture = ServiceLocator.Current();
+                    fixture.AddSingleton<ITestService>(() => testService, contract);
+                    fixture.AddSingleton<ITestService>(() => new TestService(), contract);
+
+                    // When
+                    var result = fixture.GetServices<ITestService>(contract);
+
+                    // Then
+                    result.Should().NotBeNull().And.HaveCount(1);
+                },
+                new[] { arguments });
+
+        /// <summary>
+        /// Tests the AddLazySingleton method adds an instance.
+        /// </summary>
+        [Fact]
+        public void AddLazySingletonWithFactoryShouldReturnInstance() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var fixture = ServiceLocator.Current();
+                fixture.AddLazySingleton<ITestService>(() => new TestService(), LazyThreadSafetyMode.PublicationOnly);
+
+                // When
+                var result = fixture.GetService<ITestService>();
+
+                // Then
+                result.Should().NotBeNull().And.BeOfType<TestService>();
+            });
+
+        /// <summary>
+        /// Tests the AddLazySingleton method adds a single instance each time.
+        /// </summary>
+        [Fact]
+        public void AddLazySingletonWithFactoryShouldRegisterOneInstance() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var testService = new TestService();
+                var fixture = ServiceLocator.Current();
+                fixture.AddLazySingleton<ITestService>(() => testService, LazyThreadSafetyMode.PublicationOnly);
+                fixture.AddLazySingleton<ITestService>(() => new TestService(), LazyThreadSafetyMode.PublicationOnly);
+
+                // When
+                var result = fixture.GetServices<ITestService>();
+
+                // Then
+                result.Should().NotBeNull().And.HaveCount(1);
+            });
+
+        /// <summary>
+        /// Tests the AddLazySingleton method adds an instance.
+        /// </summary>
+        [Fact]
+        public void AddLazySingletonWithLazyShouldReturnInstance() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var fixture = ServiceLocator.Current();
+                fixture.AddLazySingleton(new Lazy<ITestService>(() => new TestService(), LazyThreadSafetyMode.PublicationOnly));
+
+                // When
+                var result = fixture.GetService<ITestService>();
+
+                // Then
+                result.Should().NotBeNull().And.BeOfType<TestService>();
+            });
+
+        /// <summary>
+        /// Tests the AddLazySingleton method adds a single instance each time.
+        /// </summary>
+        [Fact]
+        public void AddLazySingletonWithLazyShouldRegisterOneInstance() =>
+            XUnitFunctionExecutor.Run(() =>
+            {
+                // Given
+                var fixture = ServiceLocator.Current();
+                fixture.AddLazySingleton(new Lazy<ITestService>(() => new TestService(), LazyThreadSafetyMode.PublicationOnly));
+                fixture.AddLazySingleton(new Lazy<ITestService>(() => new TestService(), LazyThreadSafetyMode.PublicationOnly));
+
+                // When
+                var result = fixture.GetServices<ITestService>();
+
+                // Then
+                result.Should().NotBeNull().And.HaveCount(1);
+            });
     }
 }
