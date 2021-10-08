@@ -21,7 +21,7 @@ internal static class SourceGeneratorHelpers
     private const string RegisterSingletonMethodName = "AddSingleton";
     private const string LocatorName = "ReactiveMarbles.Locator.DefaultServiceLocator";
 
-    public static string Generate(GeneratorExecutionContext context, Compilation compilation, SyntaxReceiver syntaxReceiver)
+    public static string Generate(in GeneratorExecutionContext context, Compilation compilation, SyntaxReceiver syntaxReceiver)
     {
         var methods = MetadataExtractor.GetValidMethods(context, syntaxReceiver, compilation).ToList();
 

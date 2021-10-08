@@ -22,7 +22,7 @@ internal static class MetadataExtractor
             var methodMetadata = GetValidMethod(context, invocationExpression, compilation, (method, interfaceType, concreteType, invocation, constructors, properties, registerProperties) =>
                 new RegisterMetadata(method, interfaceType, concreteType, invocation, constructors, properties, registerProperties));
 
-            if (methodMetadata != null)
+            if (methodMetadata is not null)
             {
                 yield return methodMetadata;
             }
@@ -33,7 +33,7 @@ internal static class MetadataExtractor
             var methodMetadata = GetValidMethod(context, invocationExpression, compilation, (method, interfaceType, concreteType, invocation, constructors, properties, registerProperties) =>
                 new RegisterLazySingletonMetadata(method, interfaceType, concreteType, invocation, constructors, properties, registerProperties));
 
-            if (methodMetadata != null)
+            if (methodMetadata is not null)
             {
                 yield return methodMetadata;
             }
@@ -44,7 +44,7 @@ internal static class MetadataExtractor
             var methodMetadata = GetValidRegisterConstant(context, invocationExpression, compilation, (method, interfaceType, concreteType, invocation) =>
                 new(method, interfaceType, concreteType, invocation));
 
-            if (methodMetadata != null)
+            if (methodMetadata is not null)
             {
                 yield return methodMetadata;
             }
@@ -52,7 +52,7 @@ internal static class MetadataExtractor
     }
 
     private static RegisterConstantMetadata? GetValidRegisterConstant(
-        GeneratorExecutionContext context,
+        in GeneratorExecutionContext context,
         InvocationExpressionSyntax invocationExpression,
         Compilation compilation,
         Func<IMethodSymbol, ITypeSymbol, ITypeSymbol, InvocationExpressionSyntax, RegisterConstantMetadata> createFunc)
@@ -84,7 +84,7 @@ internal static class MetadataExtractor
     }
 
     private static T? GetValidMethod<T>(
-        GeneratorExecutionContext context,
+        in GeneratorExecutionContext context,
         InvocationExpressionSyntax invocationExpression,
         Compilation compilation,
         Func<IMethodSymbol, ITypeSymbol, ITypeSymbol, InvocationExpressionSyntax, IReadOnlyList<ConstructorDependencyMetadata>, IReadOnlyList<PropertyDependencyMetadata>, IReadOnlyList<ParameterMetadata>, T> createFunc)
@@ -191,7 +191,7 @@ internal static class MetadataExtractor
             {
                 if (constructor.GetAttributes().Any(x => x.AttributeClass?.ToDisplayString(RoslynCommonHelpers.TypeFormat) == Constants.ConstructorAttribute))
                 {
-                    if (returnConstructor != null)
+                    if (returnConstructor is not null)
                     {
                         throw new ContextDiagnosticException(Diagnostic.Create(DiagnosticWarnings.MultipleConstructorsMarked, constructor.Locations.FirstOrDefault(x => x is not null), concreteTarget.ToDisplayString(RoslynCommonHelpers.TypeFormat)));
                     }

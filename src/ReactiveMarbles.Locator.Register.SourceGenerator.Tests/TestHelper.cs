@@ -52,7 +52,7 @@ public sealed class TestHelper : IDisposable
 
         Assert.Throws<InvalidOperationException>(() => utility.RunGenerator<Generator>(EventCompiler, out _, out _, out driver, source));
 
-        VerifySettings settings = new();
+        var settings = new VerifySettings();
         settings.UseParameters(contractParameter);
         settings.AutoVerify();
         return Verifier.Verify(driver, settings, file);
@@ -61,7 +61,7 @@ public sealed class TestHelper : IDisposable
     public Task TestPass(string source, string contractParameter, [CallerFilePath] string file = "")
     {
         var driver = Generate(source);
-        VerifySettings settings = new();
+        var settings = new VerifySettings();
         settings.UseParameters(contractParameter);
         return Verifier.Verify(driver, settings, file);
     }
@@ -70,7 +70,7 @@ public sealed class TestHelper : IDisposable
     {
         var driver = Generate(source);
 
-        VerifySettings settings = new();
+        var settings = new VerifySettings();
         settings.UseParameters(contractParameter, mode);
         return Verifier.Verify(driver, settings, file);
     }

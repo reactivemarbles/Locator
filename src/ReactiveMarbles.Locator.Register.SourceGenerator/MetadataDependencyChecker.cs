@@ -13,7 +13,7 @@ namespace ReactiveMarbles.Locator.Register.SourceGenerator;
 
 internal static class MetadataDependencyChecker
 {
-    public static List<MethodMetadata> CheckMetadata(GeneratorExecutionContext context, IList<MethodMetadata> metadataMethods)
+    public static List<MethodMetadata> CheckMetadata(in GeneratorExecutionContext context, IList<MethodMetadata> metadataMethods)
     {
         var metadataDependencies = new Dictionary<string, MethodMetadata>();
         foreach (var metadataMethod in metadataMethods)

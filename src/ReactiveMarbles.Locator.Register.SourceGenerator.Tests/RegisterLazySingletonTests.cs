@@ -31,8 +31,8 @@ public class RegisterLazySingletonTests : TestBase
     public Task ConstructionAndMultiplePropertyInjectionWithLazyMode(LazyThreadSafetyMode mode, string contract)
     {
         var arguments = string.IsNullOrWhiteSpace(contract) ?
-            $"LazyThreadSafetyMode.{mode}" :
-            $"\"{contract}\", LazyThreadSafetyMode.{mode}";
+            $"LazyThreadSafetyMode.{mode.ToString()}" :
+            $"\"{contract}\", LazyThreadSafetyMode.{mode.ToString()}";
 
         var source = @$"
 using System;
