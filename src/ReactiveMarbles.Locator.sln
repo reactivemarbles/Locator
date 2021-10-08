@@ -7,6 +7,24 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactiveMarbles.Locator", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactiveMarbles.Locator.Tests", "ReactiveMarbles.Locator.Tests\ReactiveMarbles.Locator.Tests.csproj", "{ADA87E92-FDFC-464B-8CBE-38EB4A3EAF26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactiveMarbles.Locator.Register.SourceGenerator", "ReactiveMarbles.Locator.Register.SourceGenerator\ReactiveMarbles.Locator.Register.SourceGenerator.csproj", "{A38338EC-6A4D-459A-A72C-335A2EA4C249}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactiveMarbles.Locator.Register.SourceGenerator.Tests", "ReactiveMarbles.Locator.Register.SourceGenerator.Tests\ReactiveMarbles.Locator.Register.SourceGenerator.Tests.csproj", "{EA2A01C3-3CB2-401D-B33E-621EE4F0EE36}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0F9CB35C-8F6C-4435-B3D9-2C962C66AB88}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.build.targets = Directory.build.targets
+		stylecop.json = stylecop.json
+		..\.editorconfig = ..\.editorconfig
+		..\.gitignore = ..\.gitignore
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+		..\version.json = ..\version.json
+		..\.github\workflows\ci-build.yml = ..\.github\workflows\ci-build.yml
+		..\.github\workflows\release.yml = ..\.github\workflows\release.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +39,14 @@ Global
 		{ADA87E92-FDFC-464B-8CBE-38EB4A3EAF26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADA87E92-FDFC-464B-8CBE-38EB4A3EAF26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADA87E92-FDFC-464B-8CBE-38EB4A3EAF26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A38338EC-6A4D-459A-A72C-335A2EA4C249}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A38338EC-6A4D-459A-A72C-335A2EA4C249}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A38338EC-6A4D-459A-A72C-335A2EA4C249}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A38338EC-6A4D-459A-A72C-335A2EA4C249}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA2A01C3-3CB2-401D-B33E-621EE4F0EE36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA2A01C3-3CB2-401D-B33E-621EE4F0EE36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA2A01C3-3CB2-401D-B33E-621EE4F0EE36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA2A01C3-3CB2-401D-B33E-621EE4F0EE36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

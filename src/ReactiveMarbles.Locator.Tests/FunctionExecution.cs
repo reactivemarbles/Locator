@@ -5,28 +5,27 @@
 using System;
 using Tmds.Utils;
 
-namespace ReactiveMarbles.Locator.Tests
-{
-    /// <summary>
-    /// Configured <see cref="Tmds.Utils.FunctionExecutor"/>.
-    /// </summary>
-    internal static class FunctionExecution
-    {
-        public static FunctionExecutor XUnitFunctionExecutor { get; } =
-            new(o =>
-            {
-                o.StartInfo.RedirectStandardError = true;
-                o.OnExit = p =>
-                {
-                    if (p.ExitCode != 0)
-                    {
-                        string message = $"Function exit code failed with exit code: {p.ExitCode}" +
-                                         Environment.NewLine +
-                                         p.StandardError.ReadToEnd();
+namespace ReactiveMarbles.Locator.Tests;
 
-                        throw new Xunit.Sdk.XunitException(message);
-                    }
-                };
-            });
-    }
+/// <summary>
+/// Configured <see cref="Tmds.Utils.FunctionExecutor"/>.
+/// </summary>
+internal static class FunctionExecution
+{
+    public static FunctionExecutor XUnitFunctionExecutor { get; } =
+        new(o =>
+        {
+            o.StartInfo.RedirectStandardError = true;
+            o.OnExit = p =>
+            {
+                if (p.ExitCode != 0)
+                {
+                    var message = $"Function exit code failed with exit code: {p.ExitCode.ToString()}" +
+                                  Environment.NewLine +
+                                  p.StandardError.ReadToEnd();
+
+                    throw new Xunit.Sdk.XunitException(message);
+                }
+            };
+        });
 }
