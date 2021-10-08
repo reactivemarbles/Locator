@@ -107,6 +107,14 @@ internal sealed class DefaultServiceLocator : IServiceLocator
     public void AddLazySingleton<TContract>(Lazy<TContract> lazy, string contract) =>
         ContractContainer<TContract>.AddLazy(lazy, contract, ContainerScope.Singleton);
 
+    /// <inheritdoc />
+    public void AddLazySingleton<TContract>(Func<TContract> instanceFactory) =>
+        Container<TContract>.AddLazy(instanceFactory, ContainerScope.Singleton);
+
+    /// <inheritdoc />
+    public void AddLazySingleton<TContract>(Func<TContract> instanceFactory, string contract) =>
+        ContractContainer<TContract>.AddLazy(instanceFactory, contract, ContainerScope.Singleton);
+
     private static ConcurrentStack<T> GetContractContainer<T>(string contract) =>
         ContractContainer<T>.Instances.GetOrAdd(contract, _ => new());
 
@@ -137,6 +145,9 @@ internal sealed class DefaultServiceLocator : IServiceLocator
         public static void Add(T service, ContainerScope scope) => ApplyScope(Instances, scope).Push(service);
 
         public static void Add(Func<T> service, ContainerScope scope) => ApplyScope(Factories, scope).Push(service);
+
+        public static void AddLazy(Func<T> factory, ContainerScope scope) =>
+            ApplyScope(Lazies, scope).Push(new(factory));
 
         public static void AddLazy(Func<T> factory, LazyThreadSafetyMode threadSafetyMode, ContainerScope scope) =>
             ApplyScope(Lazies, scope).Push(new(factory, threadSafetyMode));
@@ -230,6 +241,12 @@ internal sealed class DefaultServiceLocator : IServiceLocator
                 contract,
                 _ => InitializeConcurrentStack(service, new()),
                 (_, stack) => UpdateConcurrentStack(service, scope, stack));
+
+        public static void AddLazy(Func<T> factory, string contract, ContainerScope scope) =>
+            Lazies.AddOrUpdate(
+                contract,
+                _ => InitializeConcurrentStack(new(factory), new ConcurrentStack<Lazy<T>>()),
+                (_, stack) => UpdateConcurrentStack(new(factory), scope, stack));
 
         public static void AddLazy(Func<T> factory, string contract, LazyThreadSafetyMode threadSafetyMode, ContainerScope scope) =>
             Lazies.AddOrUpdate(

@@ -4,13 +4,10 @@
 
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using NuGet.LibraryModel;
-using NuGet.Versioning;
 using ReactiveMarbles.NuGet.Helpers;
 using ReactiveMarbles.SourceGenerator.TestNuGetHelper.Compilation;
 using VerifyTests;
@@ -54,7 +51,6 @@ public sealed class TestHelper : IDisposable
 
         var settings = new VerifySettings();
         settings.UseParameters(contractParameter);
-        settings.AutoVerify();
         return Verifier.Verify(driver, settings, file);
     }
 

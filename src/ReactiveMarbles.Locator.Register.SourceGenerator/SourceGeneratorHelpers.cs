@@ -18,8 +18,7 @@ namespace ReactiveMarbles.Locator.Register.SourceGenerator;
 internal static class SourceGeneratorHelpers
 {
     private const string RegisterMethodName = "AddService";
-    private const string RegisterSingletonMethodName = "AddSingleton";
-    private const string LocatorName = "ReactiveMarbles.Locator.DefaultServiceLocator";
+    private const string RegisterLazySingletonMethodName = "AddLazySingleton";
 
     public static string Generate(in GeneratorExecutionContext context, Compilation compilation, SyntaxReceiver syntaxReceiver)
     {
@@ -55,7 +54,7 @@ internal static class SourceGeneratorHelpers
             var typeConstructorArguments = methodMetadata.ConstructorDependencies
                 .Select(parameter => parameter.Type)
                 .Select(parameterType => parameterType.ToDisplayString(RoslynCommonHelpers.TypeFormat))
-                .Select(parameterTypeName => Argument(GetSplatService(parameterTypeName)))
+                .Select(parameterTypeName => Argument(GetService(parameterTypeName)))
                 .ToList();
 
             var contractParameter = methodMetadata.RegisterParameterValues.FirstOrDefault(x => x.ParameterName == "contract");
@@ -75,7 +74,7 @@ internal static class SourceGeneratorHelpers
             switch (methodMetadata)
             {
                 case RegisterLazySingletonMetadata lazyMetadata:
-                    yield return GetLazyBlock(lazyMetadata, call, contract);
+                    yield return GenerateLocatorLazySetService(Argument(ParenthesizedLambdaExpression(call)), lazyMetadata.InterfaceTypeName, contract);
                     break;
                 case RegisterMetadata registerMetadata:
                     yield return GenerateLocatorSetService(Argument(ParenthesizedLambdaExpression(call)), registerMetadata.InterfaceTypeName, contract);
@@ -91,76 +90,26 @@ internal static class SourceGeneratorHelpers
                 AssignmentExpression(
                     SyntaxKind.SimpleAssignmentExpression,
                     property.Name,
-                    GetSplatService(property.TypeName)))
+                    GetService(property.TypeName)))
             .ToList();
 
         return propertySet.Count > 0 ? InitializerExpression(SyntaxKind.ObjectInitializerExpression, propertySet) : null;
     }
 
-    private static CastExpressionSyntax GetSplatService(string parameterTypeName) =>
+    private static CastExpressionSyntax GetService(string parameterTypeName) =>
         CastExpression(
             parameterTypeName,
             InvocationExpression(
-                MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, Constants.ResolverParameterName, Constants.LocatorGetService),
-                new[]
-                {
-                    Argument($"typeof({parameterTypeName})"),
-                }));
-
-    private static BlockSyntax GetLazyBlock(MethodMetadata methodMetadata, ExpressionSyntax call, string? contract)
-    {
-        var lazyType = $"global::System.Lazy<{methodMetadata.InterfaceType}>";
-
-        const string lazyTypeValueProperty = "Value";
-        const string lazyVariableName = "lazy";
-
-        var lazyArguments = new List<ArgumentSyntax>
-        {
-            Argument(ParenthesizedLambdaExpression(call))
-        };
-
-        var lazyModeParameter = methodMetadata.RegisterParameterValues.FirstOrDefault(x => x.ParameterName == "mode");
-
-        if (lazyModeParameter is not null)
-        {
-            var modeName = lazyModeParameter.ParameterValue;
-
-            lazyArguments.Add(Argument(modeName));
-        }
-
-        return Block(
-            new StatementSyntax[]
-            {
-                LocalDeclarationStatement(
-                    VariableDeclaration(
-                        lazyType,
-                        new[]
-                        {
-                            VariableDeclarator(
-                                lazyVariableName,
-                                EqualsValueClause(
-                                    ObjectCreationExpression(
-                                        lazyType,
-                                        lazyArguments)))
-                        })),
-                GenerateLocatorSetService(
-                    Argument(ParenthesizedLambdaExpression(IdentifierName(lazyVariableName))),
-                    lazyType,
-                    contract),
-                GenerateLocatorSetService(
-                    Argument(ParenthesizedLambdaExpression(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, lazyVariableName, lazyTypeValueProperty))),
-                    methodMetadata.InterfaceTypeName,
-                    contract)
-            },
-            3);
-    }
+                MemberAccessExpression(
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    Constants.ResolverParameterName,
+                    GenericName(Constants.LocatorGetService, new TypeSyntax[] { IdentifierName(parameterTypeName) }))));
 
     private static ExpressionStatementSyntax GenerateLocatorSetService(ArgumentSyntax argument, string interfaceType, string? contract)
     {
         var lambdaArguments = new List<ArgumentSyntax>
         {
             argument,
-            Argument($"typeof({interfaceType})")
         };
 
         if (contract is not null)
@@ -169,7 +118,30 @@ internal static class SourceGeneratorHelpers
         }
 
         return ExpressionStatement(InvocationExpression(
-            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, LocatorName, RegisterMethodName),
+            MemberAccessExpression(
+                SyntaxKind.SimpleMemberAccessExpression,
+                Constants.ResolverParameterName,
+                GenericName(RegisterMethodName, new TypeSyntax[] { IdentifierName(interfaceType) })),
+            lambdaArguments));
+    }
+
+    private static ExpressionStatementSyntax GenerateLocatorLazySetService(ArgumentSyntax argument, string interfaceType, string? contract)
+    {
+        var lambdaArguments = new List<ArgumentSyntax>
+        {
+            argument,
+        };
+
+        if (contract is not null)
+        {
+            lambdaArguments.Add(Argument(contract));
+        }
+
+        return ExpressionStatement(InvocationExpression(
+            MemberAccessExpression(
+                SyntaxKind.SimpleMemberAccessExpression,
+                Constants.ResolverParameterName,
+                GenericName(RegisterLazySingletonMethodName, new TypeSyntax[] { IdentifierName(interfaceType) })),
             lambdaArguments));
     }
 }

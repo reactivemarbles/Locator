@@ -9,7 +9,4 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Update="**\*.cs" DependentUpon="I%(Filename).cs" />
-  </ItemGroup>
 </Project>

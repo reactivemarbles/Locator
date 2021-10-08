@@ -7,7 +7,7 @@ namespace ReactiveMarbles.Locator
     {
         static partial void SetupIOCInternal( ReactiveMarbles.Locator.IServiceLocator resolver) 
         {
-            ReactiveMarbles.Locator.DefaultServiceLocator.AddService(() => new global::Test.TestConcrete((global::System.Lazy<global::Test.Service1>)resolver.GetService(typeof(global::System.Lazy<global::Test.Service1>))), typeof(global::Test.ITest), "Test2");
+            resolver.AddService<global::Test.ITest>(() => new global::Test.TestConcrete((global::System.Lazy<global::Test.Service1>)resolver.GetService<global::System.Lazy<global::Test.Service1>>()), "Test2");
         }
     }
 }

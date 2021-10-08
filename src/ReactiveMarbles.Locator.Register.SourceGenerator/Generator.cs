@@ -35,6 +35,7 @@ public class Generator : ISourceGenerator
         var outputText = SourceGeneratorHelpers.Generate(context, compilation, syntaxReceiver);
 
         context.AddSource("Splat.DI.Extensions.Registrations.SourceGenerated.cs", SourceText.From(outputText, Encoding.UTF8));
+        context.AddSource("Splat.DI.Extensions.PreserveAttribute.SourceGenerated.cs", SourceText.From(Constants.PreserveAttribute, Encoding.UTF8));
     }
 
     /// <inheritdoc/>

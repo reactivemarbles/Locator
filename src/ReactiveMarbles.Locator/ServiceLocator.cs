@@ -34,43 +34,54 @@ public sealed class ServiceLocator : IServiceLocator
     }
 
     /// <inheritdoc/>
-    public T GetService<T>() => _current.GetService<T>();
+    public T GetService<T>() =>
+        _current.GetService<T>();
 
     /// <inheritdoc/>
     public T GetService<T>(string contract) => _current.GetService<T>(contract);
 
     /// <inheritdoc/>
-    public IEnumerable<T> GetServices<T>() => _current.GetServices<T>();
+    public IEnumerable<T> GetServices<T>() =>
+        _current.GetServices<T>();
 
     /// <inheritdoc/>
-    public IEnumerable<T> GetServices<T>(string contract) => _current.GetServices<T>(contract);
+    public IEnumerable<T> GetServices<T>(string contract) =>
+        _current.GetServices<T>(contract);
 
     /// <inheritdoc/>
-    public bool TryGetService<T>([MaybeNullWhen(false)]out T service) => _current.TryGetService(out service);
+    public bool TryGetService<T>([MaybeNullWhen(false)]out T service) =>
+        _current.TryGetService(out service);
 
     /// <inheritdoc/>
-    public bool TryGetService<T>(string contract, [MaybeNullWhen(false)]out T service) => _current.TryGetService(contract, out service);
+    public bool TryGetService<T>(string contract, [MaybeNullWhen(false)]out T service) =>
+        _current.TryGetService(contract, out service);
 
     /// <inheritdoc/>
-    public Lazy<T> GetLazyService<T>() => _current.GetLazyService<T>();
+    public Lazy<T> GetLazyService<T>() =>
+        _current.GetLazyService<T>();
 
     /// <inheritdoc/>
     public Lazy<T> GetLazyService<T>(string contract) => _current.GetLazyService<T>(contract);
 
     /// <inheritdoc/>
-    public bool TryGetLazyService<T>([MaybeNullWhen(false)]out Lazy<T> service) => _current.TryGetService(out service);
+    public bool TryGetLazyService<T>([MaybeNullWhen(false)]out Lazy<T> service) =>
+        _current.TryGetService(out service);
 
     /// <inheritdoc/>
-    public bool TryGetLazyService<T>(string contract, [MaybeNullWhen(false)]out Lazy<T> service) => _current.TryGetService(contract, out service);
+    public bool TryGetLazyService<T>(string contract, [MaybeNullWhen(false)]out Lazy<T> service) =>
+        _current.TryGetService(contract, out service);
 
     /// <inheritdoc/>
-    public bool HasService<T>() => _current.HasService<T>();
+    public bool HasService<T>() =>
+        _current.HasService<T>();
 
     /// <inheritdoc/>
-    public bool HasService<T>(string contract) => _current.HasService<T>(contract);
+    public bool HasService<T>(string contract) =>
+        _current.HasService<T>(contract);
 
     /// <inheritdoc/>
-    public void AddService<T>(Func<T> instanceFactory) => _current.AddService(instanceFactory);
+    public void AddService<T>(Func<T> instanceFactory) =>
+        _current.AddService(instanceFactory);
 
     /// <inheritdoc/>
     public void AddService<T>(Func<T> instanceFactory, string contract) =>
@@ -85,23 +96,34 @@ public sealed class ServiceLocator : IServiceLocator
         _current.AddSingleton(instance, contract);
 
     /// <inheritdoc/>
-    public void AddSingleton<TContract>(Func<TContract> instanceFactory) => _current.AddSingleton(instanceFactory);
+    public void AddSingleton<TContract>(Func<TContract> instanceFactory) =>
+        _current.AddSingleton(instanceFactory);
 
     /// <inheritdoc/>
     public void AddSingleton<TContract>(Func<TContract> instanceFactory, string contract) =>
         _current.AddSingleton(instanceFactory, contract);
 
     /// <inheritdoc/>
-    public void AddLazySingleton<TContract>(Lazy<TContract> lazy) => _current.AddLazySingleton(lazy);
+    public void AddLazySingleton<TContract>(Lazy<TContract> lazy) =>
+        _current.AddLazySingleton(lazy);
 
     /// <inheritdoc/>
     public void AddLazySingleton<TContract>(Func<TContract> instanceFactory, LazyThreadSafetyMode threadSafetyMode) =>
         _current.AddLazySingleton(instanceFactory, threadSafetyMode);
 
     /// <inheritdoc/>
-    public void AddLazySingleton<TContract>(Lazy<TContract> lazy, string contract) => _current.AddLazySingleton(lazy, contract);
+    public void AddLazySingleton<TContract>(Lazy<TContract> lazy, string contract) =>
+        _current.AddLazySingleton(lazy, contract);
 
     /// <inheritdoc/>
     public void AddLazySingleton<TContract>(Func<TContract> instanceFactory, string contract, LazyThreadSafetyMode threadSafetyMode) =>
         _current.AddLazySingleton(instanceFactory, contract, threadSafetyMode);
+
+    /// <inheritdoc/>
+    public void AddLazySingleton<TContract>(Func<TContract> instanceFactory) =>
+        _current.AddLazySingleton(instanceFactory);
+
+    /// <inheritdoc/>
+    public void AddLazySingleton<TContract>(Func<TContract> instanceFactory, string contract) =>
+        _current.AddLazySingleton(instanceFactory, contract);
 }

@@ -95,13 +95,21 @@ namespace ReactiveMarbles.Locator
         /// <summary>
         /// Registers the registrations.
         /// </summary>
+        public static void SetupIOC()
+        {
+            SetupIOCInternal(global::ReactiveMarbles.Locator.ServiceLocator.Current());
+        }
+
+        /// <summary>
+        /// Registers the registrations.
+        /// </summary>
         /// <param name="locator">The locator to register.</param>
-        public static void SetupIOC(global::ReactiveMarbles.Locator.eactiveMarbles.Locator.IServiceLocator locator)
+        public static void SetupIOC(global::ReactiveMarbles.Locator.IServiceLocator locator)
         {
             SetupIOCInternal(locator);
         }
 
-        static partial void SetupIOCInternal(global::ReactiveMarbles.Locator.eactiveMarbles.Locator.IServiceLocator resolver);
+        static partial void SetupIOCInternal(global::ReactiveMarbles.Locator.IServiceLocator resolver);
     }
 
     /// <summary>

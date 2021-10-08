@@ -75,10 +75,25 @@ public interface IEditServices
     /// <summary>
     /// Adds a lazy single instance service.
     /// </summary>
+    /// <param name="instanceFactory">The instance factory.</param>
+    /// <typeparam name="TContract">The contract type.</typeparam>
+    void AddLazySingleton<TContract>(Func<TContract> instanceFactory);
+
+    /// <summary>
+    /// Adds a lazy single instance service.
+    /// </summary>
     /// <param name="lazy">The lazy instance.</param>
     /// <param name="contract">The contract.</param>
     /// <typeparam name="TContract">The contract type.</typeparam>
     void AddLazySingleton<TContract>(Lazy<TContract> lazy, string contract);
+
+    /// <summary>
+    /// Adds a lazy single instance service.
+    /// </summary>
+    /// <param name="instanceFactory">The instance factory.</param>
+    /// <param name="contract">The contract.</param>
+    /// <typeparam name="TContract">The contract type.</typeparam>
+    void AddLazySingleton<TContract>(Func<TContract> instanceFactory, string contract);
 
     /// <summary>
     /// Adds a lazy single instance service.

@@ -16,7 +16,7 @@ namespace ReactiveMarbles.Locator.Tests;
 /// <summary>
 /// Service Locator Tests.
 /// </summary>
-public partial class ServiceLocatorTests
+public class ServiceLocatorTests
 {
     /// <summary>
     /// The Service locator has an instance.
