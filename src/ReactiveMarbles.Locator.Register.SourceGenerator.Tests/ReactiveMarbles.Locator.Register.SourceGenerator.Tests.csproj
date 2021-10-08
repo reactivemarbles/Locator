@@ -1,14 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+
     <IsPackable>false</IsPackable>
     <LangVersion>preview</LangVersion>
+    <NoWarn>$(NoWarn);SA1600;CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Tmds.ExecFunction" Version="0.5.0" />
-    <PackageReference Include="FluentAssertions" Version="6.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -19,9 +20,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Verify.SourceGenerators" Version="1.2.0" />
+    <PackageReference Include="Verify.Xunit" Version="13.0.3" />
+    <PackageReference Include="ReactiveMarbles.SourceGenerator.TestNuGetHelper" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ReactiveMarbles.Locator.Register.SourceGenerator\ReactiveMarbles.Locator.Register.SourceGenerator.csproj" />
     <ProjectReference Include="..\ReactiveMarbles.Locator\ReactiveMarbles.Locator.csproj" />
   </ItemGroup>
 
