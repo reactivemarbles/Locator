@@ -5,7 +5,7 @@ namespace ReactiveMarbles.Locator
 {
     internal static partial class LocatorRegistrations
     {
-        static partial void SetupIOCInternal( ReactiveMarbles.Locator.IServiceLocator resolver) 
+        static partial void SetupIOCInternal(ReactiveMarbles.Locator.IServiceLocator resolver) 
         {
             resolver.AddService<global::Test.ITest>(() => new global::Test.TestConcrete1(), "Test2");
             resolver.AddService<global::Test.ITest>(() => new global::Test.TestConcrete2(), "Test2");

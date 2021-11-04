@@ -9,6 +9,8 @@ internal static class Constants
     public const string ClassName = "LocatorRegistrations";
     public const string NamespaceName = "ReactiveMarbles.Locator";
     public const string LocatorGetService = "GetService";
+    public const string LocatorGetLazyService = "GetLazyService";
+    public const string LazyTypeName = "global::System.Lazy";
     public const string ServiceLocatorInterfaceTypeName = "ReactiveMarbles.Locator.IServiceLocator";
     public const string ServiceLocatorConcreteTypeName = "ReactiveMarbles.Locator.ServiceLocator";
 

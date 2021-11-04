@@ -5,7 +5,7 @@
       Title: Interface has been registered before,
       Severity: Warning,
       WarningLevel: 1,
-      Location: : (11,12)-(11,85),
+      Location: Unknown File: (11,12)-(11,85),
       MessageFormat: {0} has been registered in multiple places,
       Message: global::Test.ITest has been registered in multiple places,
       Category: Compiler
