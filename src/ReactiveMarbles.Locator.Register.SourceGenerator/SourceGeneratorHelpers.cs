@@ -52,9 +52,8 @@ internal static class SourceGeneratorHelpers
         foreach (var methodMetadata in methodMetadataEnumerable)
         {
             var typeConstructorArguments = methodMetadata.ConstructorDependencies
-                .Select(parameter => parameter.Type)
-                .Select(parameterType => parameterType.ToDisplayString(RoslynCommonHelpers.TypeFormat))
-                .Select(parameterTypeName => Argument(GetService(parameterTypeName)))
+                .Select(parameter => Get(parameter.Type))
+                .Select(Argument)
                 .ToList();
 
             var contractParameter = methodMetadata.RegisterParameterValues.FirstOrDefault(x => x.ParameterName == "contract");
@@ -96,14 +95,29 @@ internal static class SourceGeneratorHelpers
         return propertySet.Count > 0 ? InitializerExpression(SyntaxKind.ObjectInitializerExpression, propertySet) : null;
     }
 
-    private static CastExpressionSyntax GetService(string parameterTypeName) =>
-        CastExpression(
-            parameterTypeName,
-            InvocationExpression(
-                MemberAccessExpression(
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    Constants.ResolverParameterName,
-                    GenericName(Constants.LocatorGetService, new TypeSyntax[] { IdentifierName(parameterTypeName) }))));
+    private static ExpressionSyntax Get(ITypeSymbol typeSymbol)
+    {
+        if (typeSymbol is INamedTypeSymbol namedTypeSymbol && namedTypeSymbol.IsGenericType && namedTypeSymbol.TypeArguments.Length == 1 && namedTypeSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).StartsWith("global::System.Lazy"))
+        {
+            return GetLazyService(namedTypeSymbol.TypeArguments[0].ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
+        }
+
+        return GetService(typeSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
+    }
+
+    private static ExpressionSyntax GetService(string parameterTypeName) =>
+        InvocationExpression(
+            MemberAccessExpression(
+                SyntaxKind.SimpleMemberAccessExpression,
+                Constants.ResolverParameterName,
+                GenericName(Constants.LocatorGetService, new TypeSyntax[] { IdentifierName(parameterTypeName) })));
+
+    private static ExpressionSyntax GetLazyService(string parameterTypeName) =>
+        InvocationExpression(
+            MemberAccessExpression(
+                SyntaxKind.SimpleMemberAccessExpression,
+                Constants.ResolverParameterName,
+                GenericName(Constants.LocatorGetLazyService, new TypeSyntax[] { IdentifierName(parameterTypeName) })));
 
     private static ExpressionStatementSyntax GenerateLocatorSetService(ArgumentSyntax argument, string interfaceType, string? contract)
     {
