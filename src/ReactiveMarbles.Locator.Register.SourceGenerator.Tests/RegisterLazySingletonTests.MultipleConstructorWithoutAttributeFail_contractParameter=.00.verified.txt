@@ -5,7 +5,7 @@
       Title: Can't find valid constructor,
       Severity: Error,
       WarningLevel: 0,
-      Location: : (10,12)-(10,77),
+      Location: Unknown File: (10,12)-(10,77),
       MessageFormat: {0} has more than one constructor and one hasn't been marked with DependencyInjectionConstructorAttribute,
       Message: global::Test.TestConcrete has more than one constructor and one hasn't been marked with DependencyInjectionConstructorAttribute,
       Category: Compiler

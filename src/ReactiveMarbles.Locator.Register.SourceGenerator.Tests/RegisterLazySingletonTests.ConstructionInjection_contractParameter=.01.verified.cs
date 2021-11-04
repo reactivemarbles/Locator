@@ -5,9 +5,9 @@ namespace ReactiveMarbles.Locator
 {
     internal static partial class LocatorRegistrations
     {
-        static partial void SetupIOCInternal( ReactiveMarbles.Locator.IServiceLocator resolver) 
+        static partial void SetupIOCInternal(ReactiveMarbles.Locator.IServiceLocator resolver) 
         {
-            resolver.AddLazySingleton<global::Test.ITest>(() => new global::Test.TestConcrete((global::Test.IService1)resolver.GetService<global::Test.IService1>(), (global::Test.IService2)resolver.GetService<global::Test.IService2>()));
+            resolver.AddLazySingleton<global::Test.ITest>(() => new global::Test.TestConcrete(resolver.GetService<global::Test.IService1>(), resolver.GetService<global::Test.IService2>()));
         }
     }
 }

@@ -5,9 +5,9 @@ namespace ReactiveMarbles.Locator
 {
     internal static partial class LocatorRegistrations
     {
-        static partial void SetupIOCInternal( ReactiveMarbles.Locator.IServiceLocator resolver) 
+        static partial void SetupIOCInternal(ReactiveMarbles.Locator.IServiceLocator resolver) 
         {
-            resolver.AddService<global::Test.ITest>(() => new global::Test.TestConcrete((global::Test.IService1)resolver.GetService<global::Test.IService1>(), (global::Test.IService2)resolver.GetService<global::Test.IService2>()){ ServiceProperty1=(global::Test.IServiceProperty1)resolver.GetService<global::Test.IServiceProperty1>(), ServiceProperty2=(global::Test.IServiceProperty2)resolver.GetService<global::Test.IServiceProperty2>(), ServiceProperty3=(global::Test.IServiceProperty3)resolver.GetService<global::Test.IServiceProperty3>()} );
+            resolver.AddService<global::Test.ITest>(() => new global::Test.TestConcrete(resolver.GetService<global::Test.IService1>(), resolver.GetService<global::Test.IService2>()){ ServiceProperty1 = resolver.GetService<global::Test.IServiceProperty1>(), ServiceProperty2 = resolver.GetService<global::Test.IServiceProperty2>(), ServiceProperty3 = resolver.GetService<global::Test.IServiceProperty3>()} );
         }
     }
 }
