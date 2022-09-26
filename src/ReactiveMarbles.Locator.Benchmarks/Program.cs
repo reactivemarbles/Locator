@@ -1,4 +1,5 @@
-﻿using BenchmarkDotNet.Running;
+﻿using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Running;
 
 namespace ReactiveMarbles.Locator.Benchmarks
 {
@@ -11,6 +12,6 @@ namespace ReactiveMarbles.Locator.Benchmarks
         /// The main entry point into the benchmarking application.
         /// </summary>
         /// <param name="args">Arguments from the command line.</param>
-        public static void Main(string[] args) => BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
+        public static void Main(string[] args) => BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args, new DebugInProcessConfig());
     }
 }

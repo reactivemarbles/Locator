@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
     <IsPackable>false</IsPackable>
@@ -13,6 +13,9 @@
   </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\ReactiveMarbles.Locator\ReactiveMarbles.Locator.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="BenchmarkDotNet.Artifacts" />
     </ItemGroup>
 
 </Project>

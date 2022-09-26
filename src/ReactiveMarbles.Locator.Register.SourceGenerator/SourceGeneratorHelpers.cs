@@ -9,8 +9,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ReactiveMarbles.Locator.Register.SourceGenerator.Metadata;
-using ReactiveMarbles.RoslynHelpers;
-
 using static ReactiveMarbles.RoslynHelpers.SyntaxFactoryHelpers;
 
 namespace ReactiveMarbles.Locator.Register.SourceGenerator;
