@@ -7,12 +7,13 @@
     <IsTestProject>$(MSBuildProjectName.Contains('Tests'))</IsTestProject>
     <DebugType>embedded</DebugType>
     <Authors>Glenn Watson;Rodney Littles II;Chris Pulman</Authors>
-    <Copyright>Copyright (c) 2021 ReactiveUI Association Inc</Copyright>
-    <PackageIcon>logo.png</PackageIcon>
+    <Copyright>Copyright (c) $([System.DateTime]::Now.ToString('yyyy')) ReactiveUI Association Inc</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/reactivemarbles/Locator</PackageProjectUrl>
     <PackageDescription>A simple locator for Reactive Marbles. Used when performance is key over a full feature set.</PackageDescription>
     <Owners>glennawatson;chrispulman;RLittlesII</Owners>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>logo.png</PackageIcon>
     <PackageTags>locator;marbles;rx</PackageTags>
     <PackageReleaseNotes>https://github.com/reactivemarbles/Locator/releases</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/reactivemarbles/Locator</RepositoryUrl>
@@ -40,6 +41,7 @@
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\images\logo.png" Pack="true" PackagePath="\" />
     <None Include="$(MSBuildThisFileDirectory)..\LICENSE" Pack="true" PackagePath="LICENSE" />
+    <None Include="$(MSBuildThisFileDirectory)..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" />

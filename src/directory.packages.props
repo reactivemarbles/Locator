@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
-    <PackageVersion Include="Roslynator.Analyzers" Version="4.11.0" />
+    <PackageVersion Include="Roslynator.Analyzers" Version="4.12.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0" />
   </ItemGroup>
 
@@ -19,15 +19,15 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="3.11.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.11.0" />
     <PackageVersion Include="ReactiveMarbles.RoslynHelpers" Version="1.1.1" />
-    <PackageVersion Include="ILRepack" Version="2.0.27" />
+    <PackageVersion Include="ILRepack" Version="2.0.28" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageVersion Include="Tmds.ExecFunction" Version="0.7.1" />
     <PackageVersion Include="FluentAssertions" Version="6.12.0" />
-    <PackageVersion Include="xunit" Version="2.4.1" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.3" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.1" />
+    <PackageVersion Include="xunit" Version="2.4.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.2" />
   </ItemGroup>
 
   <ItemGroup>
