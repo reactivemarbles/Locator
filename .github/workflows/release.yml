@@ -24,18 +24,10 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 3.1.x
-
-    - name: Install .NET 5
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 5.0.x
-
-    - name: Install .NET 6
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 6.0.x
-        include-prerelease: true
+        dotnet-version: |
+            6.0.x
+            7.0.x
+            8.0.x
         
     - name: NBGV
       id: nbgv
