@@ -19,7 +19,7 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="3.11.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.11.0" />
     <PackageVersion Include="ReactiveMarbles.RoslynHelpers" Version="1.1.1" />
-    <PackageVersion Include="ILRepack" Version="2.0.33" />
+    <PackageVersion Include="ILRepack" Version="2.0.34" />
   </ItemGroup>
 
   <ItemGroup>
