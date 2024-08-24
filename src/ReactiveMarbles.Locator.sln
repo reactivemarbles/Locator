@@ -1,28 +1,29 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31624.102
+# 17
+VisualStudioVersion = 17.11.35219.272
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactiveMarbles.Locator", "ReactiveMarbles.Locator\ReactiveMarbles.Locator.csproj", "{18B5935E-72FD-439D-8BD5-D48861A19D00}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactiveMarbles.Locator.Tests", "ReactiveMarbles.Locator.Tests\ReactiveMarbles.Locator.Tests.csproj", "{ADA87E92-FDFC-464B-8CBE-38EB4A3EAF26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactiveMarbles.Locator.Register.SourceGenerator", "ReactiveMarbles.Locator.Register.SourceGenerator\ReactiveMarbles.Locator.Register.SourceGenerator.csproj", "{A38338EC-6A4D-459A-A72C-335A2EA4C249}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactiveMarbles.Locator.Register.SourceGenerator", "ReactiveMarbles.Locator.Register.SourceGenerator\ReactiveMarbles.Locator.Register.SourceGenerator.csproj", "{A38338EC-6A4D-459A-A72C-335A2EA4C249}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactiveMarbles.Locator.Register.SourceGenerator.Tests", "ReactiveMarbles.Locator.Register.SourceGenerator.Tests\ReactiveMarbles.Locator.Register.SourceGenerator.Tests.csproj", "{EA2A01C3-3CB2-401D-B33E-621EE4F0EE36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactiveMarbles.Locator.Register.SourceGenerator.Tests", "ReactiveMarbles.Locator.Register.SourceGenerator.Tests\ReactiveMarbles.Locator.Register.SourceGenerator.Tests.csproj", "{EA2A01C3-3CB2-401D-B33E-621EE4F0EE36}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0F9CB35C-8F6C-4435-B3D9-2C962C66AB88}"
 	ProjectSection(SolutionItems) = preProject
-		Directory.Build.props = Directory.Build.props
-		Directory.build.targets = Directory.build.targets
-		stylecop.json = stylecop.json
 		..\.editorconfig = ..\.editorconfig
 		..\.gitignore = ..\.gitignore
+		..\.github\workflows\ci-build.yml = ..\.github\workflows\ci-build.yml
+		Directory.Build.props = Directory.Build.props
+		Directory.build.targets = Directory.build.targets
+		directory.packages.props = directory.packages.props
 		..\LICENSE = ..\LICENSE
 		..\README.md = ..\README.md
-		..\version.json = ..\version.json
-		..\.github\workflows\ci-build.yml = ..\.github\workflows\ci-build.yml
 		..\.github\workflows\release.yml = ..\.github\workflows\release.yml
+		stylecop.json = stylecop.json
+		..\version.json = ..\version.json
 	EndProjectSection
 EndProject
 Global
