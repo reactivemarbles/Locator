@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2021 ReactiveUI Association Incorporated. All rights reserved.
+// Copyright (c) 2019-2024 ReactiveUI Association Incorporated. All rights reserved.
 // ReactiveUI Association Incorporated licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for full license information.
 
@@ -20,9 +20,7 @@ internal static class FunctionExecution
             {
                 if (p.ExitCode != 0)
                 {
-                    var message = $"Function exit code failed with exit code: {p.ExitCode.ToString()}" +
-                                  Environment.NewLine +
-                                  p.StandardError.ReadToEnd();
+                    var message = $"Function exit code failed with exit code: {p.ExitCode.ToString()}{Environment.NewLine}{p.StandardError.ReadToEnd()}";
 
                     throw new Xunit.Sdk.XunitException(message);
                 }

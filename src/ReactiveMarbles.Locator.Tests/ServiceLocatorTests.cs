@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2021 ReactiveUI Association Incorporated. All rights reserved.
+// Copyright (c) 2019-2024 ReactiveUI Association Incorporated. All rights reserved.
 // ReactiveUI Association Incorporated licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for full license information.
 
@@ -109,7 +109,7 @@ public class ServiceLocatorTests
                 // Then
                 result.Should().Be(true);
             },
-            new[] { argument });
+            [argument]);
 
     /// <summary>
     /// Tests the GetService method returns a concretion for the interface.
@@ -177,7 +177,7 @@ public class ServiceLocatorTests
                 // Then
                 result.Should().Be(testService);
             },
-            new[] { argument });
+            [argument]);
 
     /// <summary>
     /// Tests the GetService method returns a concretion for the interface.
@@ -206,7 +206,7 @@ public class ServiceLocatorTests
                     .Should()
                     .Be("No service for the provided type exists.");
             },
-            new[] { contract });
+            [contract]);
 
     /// <summary>
     /// Tests the GetService method returns a concretion for the interface.
@@ -264,7 +264,7 @@ public class ServiceLocatorTests
             var result = fixture.GetServices<ITestService>();
 
             // Then
-            result.Should().Contain(new[] { testServiceOne, testServiceTwo }).And.HaveCount(2);
+            result.Should().Contain([testServiceOne, testServiceTwo]).And.HaveCount(2);
         });
 
     /// <summary>
@@ -291,7 +291,7 @@ public class ServiceLocatorTests
                 // Then
                 result.Should().NotBeNull().And.HaveCount(2);
             },
-            new[] { argument });
+            [argument]);
 
     /// <summary>
     /// Tests the AddLazySingleton method adds an instance.
@@ -392,7 +392,7 @@ public class ServiceLocatorTests
                 // Then
                 result.Should().NotBeNull().And.BeOfType<TestService>();
             },
-            new[] { arguments });
+            [arguments]);
 
     /// <summary>
     /// Tests the AddSingleton method adds a single instance each time.
@@ -419,7 +419,7 @@ public class ServiceLocatorTests
                 // Then
                 result.Should().NotBeNull().And.HaveCount(1);
             },
-            new[] { arguments });
+            [arguments]);
 
     /// <summary>
     /// Tests the AddSingleton method adds an instance.
@@ -444,7 +444,7 @@ public class ServiceLocatorTests
                 // Then
                 result.Should().NotBeNull().And.BeOfType<TestService>();
             },
-            new[] { arguments });
+            [arguments]);
 
     /// <summary>
     /// Tests the AddSingleton method adds a single instance each time.
@@ -471,7 +471,7 @@ public class ServiceLocatorTests
                 // Then
                 result.Should().NotBeNull().And.HaveCount(1);
             },
-            new[] { arguments });
+            [arguments]);
 
     /// <summary>
     /// Tests the AddLazySingleton method adds an instance.

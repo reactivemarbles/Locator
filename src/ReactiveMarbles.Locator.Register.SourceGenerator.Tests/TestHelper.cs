@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2021 ReactiveUI Association Incorporated. All rights reserved.
+﻿// Copyright (c) 2019-2024 ReactiveUI Association Incorporated. All rights reserved.
 // ReactiveUI Association Incorporated licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for full license information.
 
@@ -17,13 +17,11 @@ using Xunit.Abstractions;
 
 namespace ReactiveMarbles.Locator.Register.SourceGenerator.Tests;
 
-public sealed class TestHelper : IDisposable
+public sealed class TestHelper(ITestOutputHelper testOutput) : IDisposable
 {
-    public TestHelper(ITestOutputHelper testOutput) => TestOutputHelper = testOutput ?? throw new ArgumentNullException(nameof(testOutput));
-
     private EventBuilderCompiler? EventCompiler { get; set; }
 
-    private ITestOutputHelper TestOutputHelper { get; }
+    private ITestOutputHelper TestOutputHelper { get; } = testOutput ?? throw new ArgumentNullException(nameof(testOutput));
 
     public async Task InitializeAsync()
     {
