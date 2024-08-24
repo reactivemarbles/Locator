@@ -9,18 +9,9 @@ using Xunit.Abstractions;
 
 namespace ReactiveMarbles.Locator.Register.SourceGenerator.Tests;
 
-public abstract class TestBase : IAsyncLifetime, IDisposable
+public abstract class TestBase(ITestOutputHelper testOutputHelper, string testMethod) : IAsyncLifetime, IDisposable
 {
-    private readonly string _testMethod;
-
-    protected TestBase(ITestOutputHelper testOutputHelper, string testMethod)
-    {
-        _testMethod = testMethod;
-
-        TestHelper = new(testOutputHelper);
-    }
-
-    protected TestHelper TestHelper { get; }
+    protected TestHelper TestHelper { get; } = new(testOutputHelper);
 
     public Task InitializeAsync() => TestHelper.InitializeAsync();
 
@@ -53,7 +44,7 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<ITest, TestConcrete>({arguments});
+            LocatorRegistrations.{testMethod}<ITest, TestConcrete>({arguments});
         }}
     }}
 
@@ -89,8 +80,8 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<ITest1, TestConcrete1>({arguments});
-            LocatorRegistrations.{_testMethod}<ITest2, TestConcrete2>();
+            LocatorRegistrations.{testMethod}<ITest1, TestConcrete1>({arguments});
+            LocatorRegistrations.{testMethod}<ITest2, TestConcrete2>();
         }}
     }}
 
@@ -134,9 +125,9 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<ITest1, TestConcrete1>({arguments});
-            LocatorRegistrations.{_testMethod}<ITest2, TestConcrete2>({arguments});
-            LocatorRegistrations.{_testMethod}<ITest3, TestConcrete3>({arguments});
+            LocatorRegistrations.{testMethod}<ITest1, TestConcrete1>({arguments});
+            LocatorRegistrations.{testMethod}<ITest2, TestConcrete2>({arguments});
+            LocatorRegistrations.{testMethod}<ITest3, TestConcrete3>({arguments});
         }}
     }}
 
@@ -188,7 +179,7 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<ITest, TestConcrete>({arguments});
+            LocatorRegistrations.{testMethod}<ITest, TestConcrete>({arguments});
         }}
     }}
 
@@ -228,7 +219,7 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<ITest, TestConcrete>({arguments});
+            LocatorRegistrations.{testMethod}<ITest, TestConcrete>({arguments});
         }}
     }}
 
@@ -268,7 +259,7 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<ITest, TestConcrete>({arguments});
+            LocatorRegistrations.{testMethod}<ITest, TestConcrete>({arguments});
         }}
     }}
 
@@ -308,7 +299,7 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<ITest, TestConcrete>({arguments});
+            LocatorRegistrations.{testMethod}<ITest, TestConcrete>({arguments});
         }}
     }}
 
@@ -348,7 +339,7 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<TestConcrete>({arguments});
+            LocatorRegistrations.{testMethod}<TestConcrete>({arguments});
         }}
     }}
 
@@ -388,7 +379,7 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<ITest, TestConcrete>({arguments});
+            LocatorRegistrations.{testMethod}<ITest, TestConcrete>({arguments});
         }}
     }}
 
@@ -429,7 +420,7 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<ITest, TestConcrete>({arguments});
+            LocatorRegistrations.{testMethod}<ITest, TestConcrete>({arguments});
         }}
     }}
 
@@ -477,7 +468,7 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<ITest, TestConcrete>({arguments});
+            LocatorRegistrations.{testMethod}<ITest, TestConcrete>({arguments});
         }}
     }}
 
@@ -517,7 +508,7 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<ITest, TestConcrete>({arguments});
+            LocatorRegistrations.{testMethod}<ITest, TestConcrete>({arguments});
         }}
     }}
 
@@ -558,7 +549,7 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<ITest, TestConcrete>({arguments});
+            LocatorRegistrations.{testMethod}<ITest, TestConcrete>({arguments});
         }}
     }}
 
@@ -600,7 +591,7 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<ITest, TestConcrete>({arguments});
+            LocatorRegistrations.{testMethod}<ITest, TestConcrete>({arguments});
         }}
     }}
 
@@ -628,8 +619,8 @@ namespace Test
     {{
         static DIRegister()
         {{
-            LocatorRegistrations.{_testMethod}<ITest, TestConcrete1>({arguments});
-            LocatorRegistrations.{_testMethod}<ITest, TestConcrete2>({arguments});
+            LocatorRegistrations.{testMethod}<ITest, TestConcrete1>({arguments});
+            LocatorRegistrations.{testMethod}<ITest, TestConcrete2>({arguments});
         }}
     }}
 

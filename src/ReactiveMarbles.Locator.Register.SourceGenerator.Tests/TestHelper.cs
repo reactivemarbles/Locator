@@ -17,13 +17,11 @@ using Xunit.Abstractions;
 
 namespace ReactiveMarbles.Locator.Register.SourceGenerator.Tests;
 
-public sealed class TestHelper : IDisposable
+public sealed class TestHelper(ITestOutputHelper testOutput) : IDisposable
 {
-    public TestHelper(ITestOutputHelper testOutput) => TestOutputHelper = testOutput ?? throw new ArgumentNullException(nameof(testOutput));
-
     private EventBuilderCompiler? EventCompiler { get; set; }
 
-    private ITestOutputHelper TestOutputHelper { get; }
+    private ITestOutputHelper TestOutputHelper { get; } = testOutput ?? throw new ArgumentNullException(nameof(testOutput));
 
     public async Task InitializeAsync()
     {

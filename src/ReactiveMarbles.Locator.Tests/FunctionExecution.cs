@@ -20,9 +20,7 @@ internal static class FunctionExecution
             {
                 if (p.ExitCode != 0)
                 {
-                    var message = $"Function exit code failed with exit code: {p.ExitCode.ToString()}" +
-                                  Environment.NewLine +
-                                  p.StandardError.ReadToEnd();
+                    var message = $"Function exit code failed with exit code: {p.ExitCode.ToString()}{Environment.NewLine}{p.StandardError.ReadToEnd()}";
 
                     throw new Xunit.Sdk.XunitException(message);
                 }
