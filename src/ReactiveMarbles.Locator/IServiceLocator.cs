@@ -8,6 +8,4 @@ namespace ReactiveMarbles.Locator;
 /// IService Locator.
 /// </summary>
 /// <seealso cref="System.IServiceProvider" />
-public interface IServiceLocator : IGetServices, IEditServices
-{
-}
+public interface IServiceLocator : IGetServices, IEditServices;
